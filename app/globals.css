@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #15121c;
+  --paper: #faf4e6;
+  --card: #ffffff;
+  --accent: #2f4bff;
+  color-scheme: light;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  background-color: var(--paper);
+}
+
+body {
+  background-color: transparent;
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+::selection {
+  background: var(--ink);
+  color: #fff;
+}
+
+/* Display type: heavy, loud, tight */
+.font-display {
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+/* Outline text for big display moments */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 2.5px var(--ink);
+}
+
+/* Chunky text-depth effects */
+.ts-pop {
+  text-shadow: 4px 4px 0 var(--accent);
+}
+.ts-hard {
+  text-shadow: 3px 3px 0 var(--ink);
+}
+.ts-soft {
+  filter: drop-shadow(3px 4px 0 rgba(21, 18, 28, 0.18));
+}
+@media (max-width: 640px) {
+  .ts-pop {
+    text-shadow: 3px 3px 0 var(--accent);
+  }
+  .ts-hard {
+    text-shadow: 2px 2px 0 var(--ink);
+  }
+}
+
+/* Chunky uppercase label (playful, not mono) */
+.label-mono {
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Marquee helpers */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+
+/* Hide the native cursor only when the custom one is active */
+@media (hover: hover) and (pointer: fine) {
+  body.custom-cursor,
+  body.custom-cursor * {
+    cursor: none;
+  }
+}
+
+/* Focus states: always visible */
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- Framework funnel ---- */
+.fn-tier {
+  position: relative;
+  height: 120px;
+  margin-inline: auto;
+}
+.fn-wall {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    var(--lite) 0%,
+    var(--base) 48%,
+    var(--dark) 100%
+  );
+  clip-path: polygon(0% 0%, 100% 0%, 85% 100%, 15% 100%);
+  box-shadow: 0 24px 44px -20px var(--glow);
+}
+.fn-wall::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.4),
+    transparent 20%,
+    transparent 80%,
+    rgba(0, 0, 0, 0.4)
+  );
+  clip-path: inherit;
+}
+.fn-rim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  z-index: 2;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--lite), var(--base));
+  box-shadow: inset 0 3px 6px rgba(255, 255, 255, 0.55),
+    inset 0 -10px 16px rgba(0, 0, 0, 0.35);
+}
+.fn-rim::after {
+  content: "";
+  position: absolute;
+  inset: 10px 12% auto 12%;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 35%, rgba(0, 0, 0, 0.65), var(--dark));
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.6);
+}
+.fn-label {
+  position: absolute;
+  inset: 24px 0 0 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+.fn-base {
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 25%, #d8cbb0, #c3b593 72%);
+  box-shadow: 0 24px 45px -16px rgba(0, 0, 0, 0.35);
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
