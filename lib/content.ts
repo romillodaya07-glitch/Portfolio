@@ -314,7 +314,7 @@ export const contact = {
 
 export const footer = {
   tagline: "Build. Create. Grow.",
-  builtBy: "Built by [FILL IN: credit line]",
+  builtBy: "Crafted by Tanish Momaya™",
   year: new Date().getFullYear(),
 } as const;
 
