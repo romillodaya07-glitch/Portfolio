@@ -17,7 +17,7 @@ export function CyclingTagline() {
   }, []);
 
   return (
-    <div className="ts-pop flex items-baseline gap-3 font-display text-3xl text-ink sm:text-4xl">
+    <div className="ts-pop flex max-w-full items-baseline gap-3 font-display text-xl text-ink sm:text-3xl">
       <span aria-hidden="true" className="text-pop-red">
         ★
       </span>

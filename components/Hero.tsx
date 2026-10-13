@@ -70,14 +70,14 @@ export function Hero() {
         />
       </div>
 
-      <div className="relative mx-auto flex min-h-[calc(100svh-8rem)] max-w-7xl flex-col justify-center px-5 sm:px-8">
+      <div className="relative mx-auto flex min-h-[calc(100svh-8rem)] max-w-7xl flex-col justify-start px-5 sm:px-8 lg:justify-center">
         <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="relative">
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="mb-5 inline-flex rotate-[-2deg] items-center gap-2 rounded-full border-2 border-ink bg-gold px-4 py-1.5 label-mono text-ink shadow-[3px_3px_0_0_#15121c]"
+              className="mb-5 inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border-2 border-ink bg-gold px-4 py-1.5 text-center label-mono text-ink shadow-[3px_3px_0_0_#15121c] sm:rotate-[-2deg]"
             >
               <span className="h-2 w-2 rounded-full bg-pop-red" />
               {meta.roles.join(" · ")}
@@ -139,7 +139,7 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.9 }}
-              className="mt-6 max-w-xl"
+              className="mt-6 w-full min-w-0 max-w-xl"
             >
               <CyclingTagline />
               <p className="mt-4 text-lg font-medium text-ink/70 sm:text-xl">
