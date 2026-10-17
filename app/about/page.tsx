@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { About } from "@/components/About";
 import { Principles } from "@/components/Principles";
-import { Testimonials } from "@/components/Testimonials";
 import { meta } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -14,7 +13,6 @@ export default function AboutPage() {
     <div className="pt-16">
       <About />
       <Principles />
-      <Testimonials />
     </div>
   );
 }

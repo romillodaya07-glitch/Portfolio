@@ -164,37 +164,6 @@ export const experience: readonly ExperienceJob[] = [
   },
 ];
 
-/** Skills — animated marquee / tag cloud. */
-export const skills = [
-  "Brand Strategy",
-  "Content Marketing",
-  "Social Media",
-  "HR Recruitment",
-  "Team Management",
-  "Copywriting",
-  "Public Speaking",
-  "Entrepreneurship",
-  "Problem Solving",
-  "Performance Marketing",
-  "Operations",
-  "Leadership",
-] as const;
-
-/** Broader, higher-level skill categories. */
-export const skillCategories = [
-  "AI Tools",
-  "Branding & Design",
-  "Hiring & HR",
-  "Marketing & Growth",
-  "Leadership & Team Building",
-  "Public Speaking",
-  "Data & Analytics",
-  "Operations & Systems",
-] as const;
-
-export const skillsPortraitAlt =
-  "Romil Lodaya in a blue velvet blazer, adjusting his lapel and looking off to the side";
-
 /** Remarkable moments — photo-driven highlights. */
 export const momentsIntro = "People. Platforms. Perspectives. A more grounded me.";
 
@@ -295,31 +264,6 @@ export const services = [
   },
 ] as const;
 export const servicesCta = "Have a brand to build?";
-
-/**
- * Testimonials — replace each [FILL IN] with a real quote and attribution.
- * (Left as placeholders on purpose — these should be genuine.)
- */
-export const testimonials = [
-  {
-    quote: "[FILL IN: a short quote about working with Romil]",
-    name: "[FILL IN: name]",
-    role: "[FILL IN: role, company]",
-    accent: "blue",
-  },
-  {
-    quote: "[FILL IN: a short quote]",
-    name: "[FILL IN: name]",
-    role: "[FILL IN: role, company]",
-    accent: "green",
-  },
-  {
-    quote: "[FILL IN: a short quote]",
-    name: "[FILL IN: name]",
-    role: "[FILL IN: role, company]",
-    accent: "pink",
-  },
-] as const;
 
 /**
  * Tools used — icon grid. `slug` maps to a mark in components/ui/BrandLogos;
