@@ -6,6 +6,7 @@ import { staggerContainer, riseIn, riseInLg, inViewProps } from "@/lib/motion";
 import { Magnetic } from "./Magnetic";
 import { Star, Spark } from "./ui/Doodles";
 import { burst } from "@/lib/confetti";
+import { ContactForm } from "./ContactForm";
 
 // Four distinct colors, none matching the blue section background.
 const cardColors = [
@@ -51,9 +52,25 @@ export function Contact() {
         </motion.div>
 
         <motion.div
+          variants={riseIn}
+          {...inViewProps}
+          className="mt-12 max-w-2xl"
+        >
+          <ContactForm />
+        </motion.div>
+
+        <motion.p
+          variants={riseIn}
+          {...inViewProps}
+          className="mt-16 mb-6 label-mono text-white/70"
+        >
+          Or reach me directly
+        </motion.p>
+
+        <motion.div
           variants={staggerContainer(0.1, 0.1)}
           {...inViewProps}
-          className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+          className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
         >
           {contact.links.map((l, i) => (
             <motion.div key={l.label} variants={riseIn}>
