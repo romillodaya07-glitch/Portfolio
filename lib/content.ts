@@ -259,7 +259,7 @@ export const brands = [
   { name: "Vahdam Teas", logo: "/logos/vahdam.webp" },
   { name: "Zenner", logo: "/logos/zenner.webp" },
   { name: "Avaya", logo: "/logos/avaya.webp" },
-  { name: "Billcut", logo: "/logos/billcut.webp" },
+  { name: "Billcut", logo: "/logos/billcut.jpeg" },
   { name: "Schbang", logo: "/logos/schbang.webp" },
   { name: "Penguin Random House", logo: "/logos/penguin-random-house.webp" },
 ] as const;

@@ -73,16 +73,6 @@ export function Hero() {
       <div className="relative mx-auto flex min-h-[calc(100svh-8rem)] max-w-7xl flex-col justify-start px-5 sm:px-8 lg:justify-center">
         <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="relative">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="mb-5 inline-flex max-w-full flex-wrap items-center justify-center gap-2 rounded-full border-2 border-ink bg-gold px-4 py-1.5 text-center label-mono text-ink shadow-[3px_3px_0_0_#15121c] sm:rotate-[-2deg]"
-            >
-              <span className="h-2 w-2 rounded-full bg-pop-red" />
-              {meta.roles.join(" · ")}
-            </motion.div>
-
             <h1 className="font-display leading-[0.82] tracking-tightest text-ink">
               <span className="sr-only">{meta.name}</span>
               <span
