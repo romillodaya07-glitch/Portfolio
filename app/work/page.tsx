@@ -4,6 +4,7 @@ import { Experience } from "@/components/Experience";
 import { Skills } from "@/components/Skills";
 import { Brands } from "@/components/Brands";
 import { Tools } from "@/components/Tools";
+import { Services } from "@/components/Services";
 import { meta } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export default function WorkPage() {
       <Skills />
       <Brands />
       <Tools />
+      <Services />
     </div>
   );
 }

@@ -264,6 +264,63 @@ export const brands = [
   { name: "Penguin Random House", logo: "/logos/penguin-random-house.png" },
 ] as const;
 
+/** Impact stats band — edit the numbers/labels as the work grows. */
+export const stats = [
+  { value: "3,500+", label: "Community comments moderated at scale", accent: "blue" },
+  { value: "9", label: "Brands & teams worked with", accent: "orange" },
+  { value: "6", label: "Companies across strategy, marketing & HR", accent: "green" },
+  { value: "2+ yrs", label: "Building brands, teams & systems", accent: "pink" },
+] as const;
+
+/** Services — "work with me" offerings, drawn from the three pillars. */
+export const servicesIntro = "Three ways we can work together.";
+export const services = [
+  {
+    no: "01",
+    title: "Brand & Growth Strategy",
+    body: "Positioning, messaging, and a clear plan to grow — turning chaos into an actionable roadmap you can run with.",
+    accent: "blue",
+  },
+  {
+    no: "02",
+    title: "Content & Campaigns",
+    body: "Social content, campaigns, and copy that connect, convert, and build a brand people actually remember.",
+    accent: "orange",
+  },
+  {
+    no: "03",
+    title: "People & Operations",
+    body: "Hiring, culture, and the systems behind a growing team — bringing out the best in the people doing the work.",
+    accent: "purple",
+  },
+] as const;
+export const servicesCta = "Have a brand to build?";
+
+/**
+ * Testimonials — replace each [FILL IN] with a real quote and attribution.
+ * (Left as placeholders on purpose — these should be genuine.)
+ */
+export const testimonials = [
+  {
+    quote: "[FILL IN: a short quote about working with Romil]",
+    name: "[FILL IN: name]",
+    role: "[FILL IN: role, company]",
+    accent: "blue",
+  },
+  {
+    quote: "[FILL IN: a short quote]",
+    name: "[FILL IN: name]",
+    role: "[FILL IN: role, company]",
+    accent: "green",
+  },
+  {
+    quote: "[FILL IN: a short quote]",
+    name: "[FILL IN: name]",
+    role: "[FILL IN: role, company]",
+    accent: "pink",
+  },
+] as const;
+
 /**
  * Tools used — icon grid. `slug` maps to a mark in components/ui/BrandLogos;
  * `color` is each brand's official hex (Simple Icons), used to tint the logo.
