@@ -54,7 +54,7 @@ export function Services() {
           {...inViewProps}
           className="mt-12 flex flex-col items-start gap-5 rounded-3xl border-4 border-ink bg-card p-8 shadow-[8px_8px_0_0_#15121c] sm:flex-row sm:items-center sm:justify-between"
         >
-          <p className="ts-pop font-display text-3xl text-ink sm:text-4xl">
+          <p className="font-display text-3xl text-ink sm:text-4xl">
             {servicesCta}
           </p>
           <Link

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Archivo_Black } from "next/font/google";
+import { Sora } from "next/font/google";
 import "./globals.css";
 import { meta } from "@/lib/content";
 import { SmoothScroll } from "@/components/SmoothScroll";
@@ -12,15 +12,16 @@ import { IntroLoader } from "@/components/IntroLoader";
 import { ColorMorph } from "@/components/ColorMorph";
 import { KonamiEasterEgg } from "@/components/KonamiEasterEgg";
 
-const sans = Archivo({
+const sans = Sora({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const display = Archivo_Black({
+const display = Sora({
   subsets: ["latin"],
-  weight: "400",
+  weight: ["700", "800"],
   variable: "--font-display",
   display: "swap",
 });
