@@ -78,6 +78,8 @@ export function Contact() {
                 <a
                   href={l.href}
                   data-cursor="Open"
+                  target={l.href.startsWith("http") ? "_blank" : undefined}
+                  rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
                   onClick={(e) => burst(e.clientX, e.clientY)}
                   className={`group flex h-full flex-col justify-between gap-10 rounded-3xl border-4 border-ink ${
                     cardColors[i % cardColors.length]
