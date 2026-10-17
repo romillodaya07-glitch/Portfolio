@@ -38,8 +38,8 @@ export function SectionHeading({
           {kicker}
         </span>
       </motion.div>
-      <h2 className="ts-pop font-display text-[clamp(2.75rem,1.3rem+6vw,6.5rem)] leading-[0.88] tracking-tightest text-ink">
-        <span className="block overflow-hidden pb-[0.08em]">
+      <h2 className="ts-pop font-display text-[clamp(2.5rem,1rem+5.2vw,5.75rem)] leading-[0.9] tracking-tightest text-ink">
+        <span className="-mx-[0.16em] block overflow-hidden px-[0.16em] pb-[0.14em]">
           <motion.span variants={maskUp} className="block">
             {children}
           </motion.span>
