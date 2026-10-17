@@ -29,3 +29,7 @@ next-env.d.ts
 # source assets (originals kept out of repo)
 /*.pptx
 /WhatsApp Image*.jpeg
+
+# local source asset folders (canonical copies live in public/logos)
+/Company Logos/
+/App Logo/

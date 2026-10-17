@@ -257,7 +257,7 @@ export const brands = [
   { name: "Collective Artists Network", logo: "/logos/collective.webp" },
   { name: "Izzari", logo: "/logos/izzari.avif" },
   { name: "Vahdam Teas", logo: "/logos/vahdam.webp" },
-  { name: "Zenner", logo: "" },
+  { name: "Zenner", logo: "/logos/zenner.webp" },
   { name: "Avaya", logo: "/logos/avaya.webp" },
   { name: "Billcut", logo: "/logos/billcut.webp" },
   { name: "Schbang", logo: "/logos/schbang.webp" },
