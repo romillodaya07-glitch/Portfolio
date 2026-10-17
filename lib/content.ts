@@ -253,15 +253,15 @@ export const moments = [
  * missing it's hidden gracefully and just the name shows.
  */
 export const brands = [
-  { name: "Malbros Furnitures", logo: "/logos/malbros.png" },
-  { name: "Collective Artists Network", logo: "/logos/collective.png" },
-  { name: "Izzari", logo: "/logos/izzari.png" },
-  { name: "Vahdam Teas", logo: "/logos/vahdam.png" },
-  { name: "Zenner", logo: "/logos/zenner.png" },
-  { name: "Avaya", logo: "/logos/avaya.png" },
-  { name: "Billcut", logo: "/logos/billcut.png" },
-  { name: "Schbang", logo: "/logos/schbang.png" },
-  { name: "Penguin Random House", logo: "/logos/penguin-random-house.png" },
+  { name: "Malbros Furnitures", logo: "/logos/malbros.webp" },
+  { name: "Collective Artists Network", logo: "/logos/collective.webp" },
+  { name: "Izzari", logo: "/logos/izzari.avif" },
+  { name: "Vahdam Teas", logo: "/logos/vahdam.webp" },
+  { name: "Zenner", logo: "" },
+  { name: "Avaya", logo: "/logos/avaya.webp" },
+  { name: "Billcut", logo: "/logos/billcut.webp" },
+  { name: "Schbang", logo: "/logos/schbang.webp" },
+  { name: "Penguin Random House", logo: "/logos/penguin-random-house.webp" },
 ] as const;
 
 /** Impact stats band — edit the numbers/labels as the work grows. */

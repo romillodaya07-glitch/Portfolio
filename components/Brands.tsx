@@ -12,7 +12,8 @@ const starColors = [
   "text-pop-orange",
 ];
 
-/** Logo + name marquee. Missing logo files hide gracefully (name still shows). */
+/** Logo + name marquee. Each logo sits in a white chip; missing logos just
+ *  show the name. */
 export function Brands() {
   const doubled = [...brands, ...brands];
   return (
@@ -27,22 +28,27 @@ export function Brands() {
 
       <div className="marquee-mask flex overflow-hidden">
         <div
-          className="flex shrink-0 items-center gap-10 pr-10 animate-marquee"
-          style={{ ["--marquee-duration" as string]: "46s" }}
+          className="flex shrink-0 items-center gap-8 pr-8 animate-marquee"
+          style={{ ["--marquee-duration" as string]: "52s" }}
         >
           {doubled.map((b, i) => (
-            <span key={`${b.name}-${i}`} className="flex items-center gap-10">
+            <span key={`${b.name}-${i}`} className="flex items-center gap-8">
               <span className="flex items-center gap-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={b.logo}
-                  alt=""
-                  aria-hidden="true"
-                  className="h-9 w-auto max-w-[120px] shrink-0 object-contain sm:h-10"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
+                {b.logo && (
+                  <span className="flex h-12 items-center justify-center rounded-xl border-2 border-ink bg-white px-4 shadow-[3px_3px_0_0_#15121c]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={b.logo}
+                      alt=""
+                      aria-hidden="true"
+                      className="h-7 w-auto max-w-[130px] object-contain"
+                      onError={(e) => {
+                        const chip = e.currentTarget.parentElement;
+                        if (chip) chip.style.display = "none";
+                      }}
+                    />
+                  </span>
+                )}
                 <span className="whitespace-nowrap font-display text-2xl tracking-tight text-white sm:text-3xl">
                   {b.name}
                 </span>
