@@ -520,6 +520,38 @@
   box-shadow: inset 0 0 0 1px rgba(213, 235, 255, 0.55), inset 0 0 35px rgba(9, 43, 96, 0.15);
 }
 
+.laptopMark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 68px;
+  height: 68px;
+  place-items: center;
+  color: #111018;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 2px 1px rgba(255, 255, 255, 0.35));
+  pointer-events: none;
+}
+
+.laptopMark svg {
+  display: block;
+  width: 42px;
+  height: 48px;
+  fill: currentColor;
+}
+
+.laptopMark i {
+  position: absolute;
+  top: 6px;
+  right: 0;
+  width: 9px;
+  height: 9px;
+  background: #ffcf33;
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  filter: drop-shadow(0 0 3px rgba(255, 248, 223, 0.8));
+}
+
 .laptopScreen::after {
   position: absolute;
   top: 5px;
