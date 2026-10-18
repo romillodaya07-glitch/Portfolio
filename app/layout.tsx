@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Sora } from "next/font/google";
+import { Anton, Patrick_Hand, Sora } from "next/font/google";
 import "./globals.css";
 import { meta } from "@/lib/content";
 import { SmoothScroll } from "@/components/SmoothScroll";
@@ -26,6 +26,21 @@ const display = Sora({
   display: "swap",
 });
 
+// Hero-only typefaces: existing site typography stays on Sora.
+const heroDisplay = Anton({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-hero-display",
+  display: "swap",
+});
+
+const heroHand = Patrick_Hand({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-hero-hand",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: meta.title,
   description: meta.description,
@@ -48,7 +63,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable}`}>
+    <html lang="en" className={`${sans.variable} ${display.variable} ${heroDisplay.variable} ${heroHand.variable}`}>
       <body>
         <a
           href="#about"

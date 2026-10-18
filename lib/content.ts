@@ -26,6 +26,29 @@ export const taglines = [
 
 export const heroLine = "I don't just create content, I create connection.";
 
+export const heroDescription =
+  "I turn ideas into brands, stories into attention, and ambitious plans into things people can actually use.";
+export const heroServices = [
+  {
+    number: "01",
+    title: "Strategy",
+    copy: "Turn ideas into clear, scalable plans.",
+    color: "text-pop-red",
+  },
+  {
+    number: "02",
+    title: "Creative",
+    copy: "Make brands and stories people remember.",
+    color: "text-electric",
+  },
+  {
+    number: "03",
+    title: "Community",
+    copy: "Bring people together around good ideas.",
+    color: "text-pop-orange",
+  },
+] as const;
+
 export const about = {
   kicker: "About",
   headline: "Builder. Creator. Dreamer.",

@@ -1,184 +1,423 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
-import { useEffect, useRef } from "react";
-import { meta, heroLine } from "@/lib/content";
-import { EASE_OUT_EXPO } from "@/lib/motion";
-import { Star, Spark, Squiggle, Arrow } from "./ui/Doodles";
-import { CyclingTagline } from "./CyclingTagline";
+import Link from "next/link";
+import { createPortal } from "react-dom";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { type CSSProperties, type KeyboardEvent, type PointerEvent, useEffect, useRef, useState } from "react";
+import { heroDescription, heroServices } from "@/lib/content";
+import { Arrow, Spark, Star, Squiggle } from "./ui/Doodles";
+import { NameLockup } from "./ui/NameLockup";
+import styles from "./Hero.module.css";
 
-const NAME = "ROMIL";
-const SURNAME = "LODAYA";
-const NAME_HOVER = ["#2f4bff", "#ff4b3e", "#1faa59", "#7b5cff", "#ff7a00"];
+type LayerPose = { x: number; y: number; scale: number; rotate: number };
+type LayerId = "character" | "plane" | "books" | "laptop" | "coffee" | "plant" | "star" | "note";
+
+const CREATIVE_STORAGE_KEY = "romil-portfolio-hero-layout-v1";
+const LAYERS: { id: LayerId; label: string }[] = [
+  { id: "character", label: "Character" },
+  { id: "plane", label: "Paper plane" },
+  { id: "books", label: "Book stack" },
+  { id: "laptop", label: "Laptop" },
+  { id: "coffee", label: "Coffee" },
+  { id: "plant", label: "Plant" },
+  { id: "star", label: "Star doodle" },
+  { id: "note", label: "Impact note" },
+];
+
+const EMPTY_POSE: LayerPose = { x: 0, y: 0, scale: 1, rotate: 0 };
+
+function PlaneArtwork() {
+  return (
+    <svg className={styles.flightPath} viewBox="0 0 260 140" fill="none" aria-hidden="true">
+      <path className={styles.flightTrail} d="M0 60C40 24 68 27 99 66S164 100 215 31" />
+    </svg>
+  );
+}
+
+function PaperPlaneIcon() {
+  return (
+    <svg className={styles.planeIcon} viewBox="0 0 42 36" fill="none" aria-hidden="true">
+      <path d="M1 9 40 1 20 35 15 18 1 9Z" fill="#FFD62F" stroke="#16131B" strokeWidth="2.2" strokeLinejoin="round" />
+      <path d="m15 18 25-17-20 34-5-17Z" fill="#FFB900" stroke="#16131B" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d="m1 9 14 9" stroke="#F5A600" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+function StatMark({ type }: { type: "linkedin" | "people" | "years" | "views" }) {
+  if (type === "linkedin") return <span className={`${styles.statMark} ${styles.linkedinMark}`} aria-hidden="true">in</span>;
+  if (type === "views") return <span className={`${styles.statMark} ${styles.viewsMark}`} aria-hidden="true"><span /></span>;
+  if (type === "years") return <span className={`${styles.statMark} ${styles.yearsMark}`} aria-hidden="true">✦</span>;
+  return (
+    <span className={`${styles.statMark} ${styles.peopleMark}`} aria-hidden="true">
+      <i /><i /><i />
+    </span>
+  );
+}
 
 export function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
-  const fade = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
-
-  // Cursor-reactive blobs: pointer offset from center, parallaxed per blob.
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const px = useSpring(mx, { stiffness: 60, damping: 20 });
-  const py = useSpring(my, { stiffness: 60, damping: 20 });
-  const b1x = useTransform(px, (v) => v * 40);
-  const b1y = useTransform(py, (v) => v * 40);
-  const b2x = useTransform(px, (v) => v * -55);
-  const b2y = useTransform(py, (v) => v * -35);
-  const b3x = useTransform(px, (v) => v * 30);
-  const b3y = useTransform(py, (v) => v * -45);
+  const heroRef = useRef<HTMLElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{
+    id: LayerId;
+    pointerId: number;
+    startX: number;
+    startY: number;
+    originX: number;
+    originY: number;
+  } | null>(null);
+  const reduceMotion = useReducedMotion();
+  const [creativeMode, setCreativeMode] = useState(false);
+  const [selectedLayer, setSelectedLayer] = useState<LayerId>("character");
+  const [layouts, setLayouts] = useState<Partial<Record<LayerId, LayerPose>>>({});
+  const [layoutLoaded, setLayoutLoaded] = useState(false);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const cueOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      mx.set(e.clientX / window.innerWidth - 0.5);
-      my.set(e.clientY / window.innerHeight - 0.5);
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [mx, my]);
+    try {
+      const saved = window.localStorage.getItem(CREATIVE_STORAGE_KEY);
+      if (saved) setLayouts(JSON.parse(saved) as Partial<Record<LayerId, LayerPose>>);
+    } catch {
+      // The hero works normally when storage is unavailable.
+    }
+    setLayoutLoaded(true);
+  }, []);
 
-  const letters = (word: string) => word.split("");
+  useEffect(() => {
+    if (!layoutLoaded) return;
+    try {
+      window.localStorage.setItem(CREATIVE_STORAGE_KEY, JSON.stringify(layouts));
+    } catch {
+      // Saving is optional; editing remains available for this visit.
+    }
+  }, [layouts, layoutLoaded]);
+
+  const setPose = (id: LayerId, update: Partial<LayerPose>) => {
+    setLayouts((current) => ({
+      ...current,
+      [id]: { ...EMPTY_POSE, ...current[id], ...update },
+    }));
+  };
+
+  const poseStyle = (id: LayerId): CSSProperties => {
+    const pose = { ...EMPTY_POSE, ...layouts[id] };
+    return {
+      transform: `translate3d(${pose.x}px, ${pose.y}px, 0) rotate(${pose.rotate}deg) scale(${pose.scale})`,
+    };
+  };
+
+  const handleCreativePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (!creativeMode) return;
+    const target = (event.target as HTMLElement).closest<HTMLElement>("[data-creative-id]");
+    const id = target?.dataset.creativeId as LayerId | undefined;
+    if (!target || !id || (event.target as HTMLElement).closest("button, input, select")) return;
+    event.preventDefault();
+    setSelectedLayer(id);
+    target.setPointerCapture(event.pointerId);
+    const pose = { ...EMPTY_POSE, ...layouts[id] };
+    dragRef.current = {
+      id,
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: pose.x,
+      originY: pose.y,
+    };
+  };
+
+  const handleCreativePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (!creativeMode || !drag || drag.pointerId !== event.pointerId) return;
+    setPose(drag.id, {
+      x: drag.originX + event.clientX - drag.startX,
+      y: drag.originY + event.clientY - drag.startY,
+    });
+  };
+
+  const handleCreativeKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!creativeMode || !["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) return;
+    const target = (event.target as HTMLElement).closest<HTMLElement>("[data-creative-id]");
+    const id = target?.dataset.creativeId as LayerId | undefined;
+    if (!id) return;
+    event.preventDefault();
+    setSelectedLayer(id);
+    const step = event.shiftKey ? 12 : 4;
+    const pose = { ...EMPTY_POSE, ...layouts[id] };
+    if (event.key === "ArrowLeft") setPose(id, { x: pose.x - step });
+    if (event.key === "ArrowRight") setPose(id, { x: pose.x + step });
+    if (event.key === "ArrowUp") setPose(id, { y: pose.y - step });
+    if (event.key === "ArrowDown") setPose(id, { y: pose.y + step });
+  };
+
+  const handleScenePointerMove = (event: PointerEvent<HTMLElement>) => {
+    if (creativeMode || reduceMotion || event.pointerType === "touch") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const horizontal = (event.clientX - (bounds.left + bounds.width / 2)) / bounds.width;
+    const vertical = (event.clientY - (bounds.top + bounds.height / 2)) / bounds.height;
+    const face = event.currentTarget.querySelector<HTMLElement>(`.${styles.characterFrame}`);
+    const background = event.currentTarget.querySelector<HTMLElement>(`.${styles.glowParallax}`);
+    face?.style.setProperty("--head-tilt", `${Math.max(-1.6, Math.min(1.6, horizontal * 3.2))}deg`);
+    background?.style.setProperty("--scene-x", `${horizontal * 12}px`);
+    background?.style.setProperty("--scene-y", `${vertical * 10}px`);
+  };
+
+  const resetScene = () => {
+    setLayouts({});
+    setSelectedLayer("character");
+  };
 
   return (
     <section
       id="top"
-      ref={ref}
-      className="relative min-h-[100svh] overflow-hidden bg-transparent pt-28 sm:pt-32"
+      ref={heroRef}
+      className={styles.hero}
+      aria-label="Romil Lodaya introduction"
+      onPointerMove={handleScenePointerMove}
     >
-      {/* Rainbow blobs — drift on their own and lean toward the cursor */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <motion.div
-          style={{ x: b1x, y: b1y }}
-          className="animate-blob-drift absolute -left-20 top-6 h-[34vw] w-[34vw] rounded-full bg-pop-blue/30 blur-3xl"
-        />
-        <motion.div
-          style={{ x: b2x, y: b2y }}
-          className="animate-blob-drift absolute right-[8%] top-1/4 h-[30vw] w-[30vw] rounded-full bg-pop-orange/30 blur-3xl [animation-delay:-5s]"
-        />
-        <motion.div
-          style={{ x: b3x, y: b3y }}
-          className="animate-blob-drift absolute bottom-6 left-1/3 h-[28vw] w-[28vw] rounded-full bg-pop-purple/25 blur-3xl [animation-delay:-9s]"
-        />
-        <motion.div
-          style={{ x: b1x, y: b3y }}
-          className="animate-blob-drift absolute bottom-[12%] right-1/4 h-[22vw] w-[22vw] rounded-full bg-pop-green/25 blur-3xl [animation-delay:-13s]"
-        />
-      </div>
+      <div className={`${styles.glowParallax} ${styles.backgroundGlow}`} aria-hidden="true" />
+      <div className={styles.paperTexture} aria-hidden="true" />
 
-      <div className="relative mx-auto flex min-h-[calc(100svh-8rem)] max-w-7xl flex-col justify-start px-5 sm:px-8 lg:justify-center">
-        <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="relative">
-            <h1 className="font-display leading-[0.82] tracking-tightest text-ink">
-              <span className="sr-only">{meta.name}</span>
-              <span
-                aria-hidden="true"
-                className="ts-pop block whitespace-nowrap text-[clamp(3rem,1rem+10.5vw,7.5rem)]"
-              >
-                {letters(NAME).map((c, i) => (
-                  <span key={i} className="inline-block overflow-hidden align-bottom">
-                    <motion.span
-                      initial={{ y: "110%" }}
-                      animate={{ y: "0%" }}
-                      transition={{
-                        duration: 0.9,
-                        delay: 0.15 + i * 0.05,
-                        ease: EASE_OUT_EXPO,
-                      }}
-                      whileHover={{
-                        y: -14,
-                        rotate: i % 2 ? 7 : -7,
-                        color: NAME_HOVER[i % NAME_HOVER.length],
-                        transition: { type: "spring", stiffness: 500, damping: 12 },
-                      }}
-                      className="inline-block cursor-default"
-                    >
-                      {c}
-                    </motion.span>
-                  </span>
-                ))}
-              </span>
-              <span
-                aria-hidden="true"
-                className="ts-soft block whitespace-nowrap text-[clamp(3rem,1rem+10.5vw,7.5rem)] text-outline"
-              >
-                {letters(SURNAME).map((c, i) => (
-                  <span key={i} className="inline-block overflow-hidden align-bottom">
-                    <motion.span
-                      initial={{ y: "110%" }}
-                      animate={{ y: "0%" }}
-                      transition={{
-                        duration: 0.9,
-                        delay: 0.4 + i * 0.05,
-                        ease: EASE_OUT_EXPO,
-                      }}
-                      className="inline-block"
-                    >
-                      {c}
-                    </motion.span>
-                  </span>
-                ))}
-              </span>
-            </h1>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.9 }}
-              className="mt-6 w-full min-w-0 max-w-xl"
-            >
-              <CyclingTagline />
-              <p className="mt-4 text-lg font-medium text-ink/70 sm:text-xl">
-                &ldquo;{heroLine}&rdquo;
-              </p>
-            </motion.div>
-
-            <Star className="absolute -top-4 right-10 hidden h-10 w-10 animate-spin-slow text-pop-purple sm:block" />
-            <Spark className="absolute bottom-20 -left-3 hidden h-6 w-6 text-pop-red lg:block" />
+      <div className={styles.contentGrid}>
+        <div className={styles.copyColumn}>
+          <div className={styles.lockupWrap}>
+            <NameLockup greeting="Hey, I'm" as="h1" />
+            <Spark className={`${styles.helloSpark} h-6 w-6 text-ink`} />
           </div>
 
-          {/* Portrait */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, rotate: 4 }}
-            animate={{ opacity: 1, scale: 1, rotate: 2 }}
-            transition={{ duration: 1, delay: 0.3, ease: EASE_OUT_EXPO }}
-            className="relative mx-auto w-full max-w-[20rem] sm:max-w-[22rem]"
+          <p className={styles.intro}>{heroDescription}</p>
+
+          <div className={styles.actions}>
+            <Link href="/work" className={`${styles.button} ${styles.primaryButton}`}>
+              View My Work <span aria-hidden="true">↗</span>
+            </Link>
+            <Link href="/contact" className={`${styles.button} ${styles.secondaryButton}`}>
+              Get in Touch
+            </Link>
+          </div>
+
+          <ul className={styles.services} aria-label="What I do">
+            {heroServices.map((service) => (
+              <li key={service.title} className={styles.service}>
+                <span className={`${styles.serviceNumber} ${service.color}`}>{service.number}</span>
+                <h2>{service.title}</h2>
+                <p>{service.copy}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div
+          className={`${styles.scene} ${creativeMode ? styles.isCreative : ""}`}
+          ref={sceneRef}
+          onPointerDown={handleCreativePointerDown}
+          onPointerMove={handleCreativePointerMove}
+          onPointerUp={() => { dragRef.current = null; }}
+          onPointerCancel={() => { dragRef.current = null; }}
+          onKeyDown={handleCreativeKeyDown}
+          onClick={(event) => {
+            if (!creativeMode) return;
+            const target = (event.target as HTMLElement).closest<HTMLElement>("[data-creative-id]");
+            const id = target?.dataset.creativeId as LayerId | undefined;
+            if (id) setSelectedLayer(id);
+          }}
+          onPointerLeave={() => {
+            const face = sceneRef.current?.querySelector<HTMLElement>(`.${styles.characterFrame}`);
+            const background = sceneRef.current?.querySelector<HTMLElement>(`.${styles.glowParallax}`);
+            face?.style.setProperty("--head-tilt", "0deg");
+            background?.style.setProperty("--scene-x", "0px");
+            background?.style.setProperty("--scene-y", "0px");
+          }}
+        >
+          <div className={styles.sceneGlow} aria-hidden="true" />
+          <div className={styles.sceneDoodles} aria-hidden={creativeMode ? undefined : true}>
+            <div
+              className={`${styles.movableLayer} ${styles.starLayer}`}
+              data-creative-id="star"
+              tabIndex={creativeMode ? 0 : -1}
+              aria-label="Star decoration"
+              style={poseStyle("star")}
+            >
+              <Star className="h-12 w-12 text-pop-yellow drop-shadow-[2px_2px_0_#15121c]" />
+            </div>
+            <Squiggle className={styles.squiggle} />
+            <span className={styles.miniSparkle}>✦</span>
+            <span className={styles.impactArrow}>↗</span>
+          </div>
+
+          <div
+            className={`${styles.movableLayer} ${styles.planeLayer}`}
+            data-creative-id="plane"
+            tabIndex={creativeMode ? 0 : -1}
+            aria-label="Yellow paper plane"
+            style={poseStyle("plane")}
           >
-            <div className="relative aspect-[4/5] max-h-[58svh] overflow-hidden rounded-[2rem] border-4 border-ink bg-card shadow-[10px_10px_0_0_#2f4bff]">
-              <motion.div style={{ y: imgY }} className="absolute inset-0 scale-110">
+            <PaperPlaneIcon />
+          </div>
+
+          <PlaneArtwork />
+
+          <div className={styles.plantBack} aria-hidden="true">
+            <i /><i /><i /><i /><i /><i />
+          </div>
+
+          <div className={styles.desk} aria-hidden="true">
+            <span className={styles.deskEdge} />
+          </div>
+
+          <div
+            className={`${styles.movableLayer} ${styles.characterLayer}`}
+            data-creative-id="character"
+            tabIndex={creativeMode ? 0 : -1}
+            aria-label="Animated portrait character"
+            style={poseStyle("character")}
+          >
+            <div className={styles.characterFrame}>
+              <div className={styles.characterBob}>
                 <Image
-                  src="/photos/hero-spotlight.jpeg"
-                  alt="Romil Lodaya in a grey suit under a dramatic spotlight, smiling with hands in pockets"
+                  src="/photos/hero-character.png"
+                  alt="A 3D animated illustration of Romil in a black shirt and wristwatch"
                   fill
                   priority
-                  fetchPriority="high"
-                  sizes="(max-width: 1024px) 90vw, 40vw"
-                  className="object-cover object-top"
+                  sizes="(max-width: 900px) 94vw, 52vw"
+                  className={styles.characterImage}
                 />
-              </motion.div>
+              </div>
+              <span className={`${styles.eyelid} ${styles.eyelidLeft}`} aria-hidden="true" />
+              <span className={`${styles.eyelid} ${styles.eyelidRight}`} aria-hidden="true" />
             </div>
-            <div className="absolute -bottom-4 -left-4 rotate-[-6deg] rounded-full border-2 border-ink bg-pop-green px-5 py-2 text-sm font-black uppercase tracking-wide text-ink shadow-[3px_3px_0_0_#15121c]">
-              Builder · Creator · Dreamer
+          </div>
+
+          <div
+            className={`${styles.movableLayer} ${styles.booksLayer}`}
+            data-creative-id="books"
+            tabIndex={creativeMode ? 0 : -1}
+            aria-label="Four business and personal development books"
+            style={poseStyle("books")}
+          >
+            <div className={`${styles.book} ${styles.bookSubtle}`}>The Subtle Art of Not Giving a F*ck</div>
+            <div className={`${styles.book} ${styles.bookAtomic}`}>Atomic Habits</div>
+            <div className={`${styles.book} ${styles.bookMoney}`}>The Psychology of Money</div>
+            <div className={`${styles.book} ${styles.bookZero}`}>Zero to One</div>
+          </div>
+
+          <div
+            className={`${styles.movableLayer} ${styles.laptopLayer}`}
+            data-creative-id="laptop"
+            tabIndex={creativeMode ? 0 : -1}
+            aria-label="Blue laptop with a plain lid"
+            style={poseStyle("laptop")}
+          >
+            <div className={styles.laptop} aria-hidden="true">
+              <div className={styles.laptopScreen} />
+              <div className={styles.laptopBase} />
             </div>
-            <Squiggle className="absolute -right-2 -top-6 hidden h-6 w-16 text-pop-orange lg:block" />
-          </motion.div>
+          </div>
+
+          <div
+            className={`${styles.movableLayer} ${styles.coffeeLayer}`}
+            data-creative-id="coffee"
+            tabIndex={creativeMode ? 0 : -1}
+            aria-label="Coffee cup"
+            style={poseStyle("coffee")}
+          >
+            <div className={styles.coffeeCup} aria-hidden="true"><span /><i /></div>
+          </div>
+
+          <div className={styles.notebook} aria-hidden="true"><span>notes &amp; next steps</span></div>
+          <div
+            className={`${styles.movableLayer} ${styles.plantLayer}`}
+            data-creative-id="plant"
+            tabIndex={creativeMode ? 0 : -1}
+            aria-label="Small desk plant"
+            style={poseStyle("plant")}
+          >
+            <div className={styles.potPlant} aria-hidden="true"><i /><i /><i /><i /><span /></div>
+          </div>
+          <div
+            className={`${styles.movableLayer} ${styles.noteLayer}`}
+            data-creative-id="note"
+            tabIndex={creativeMode ? 0 : -1}
+            aria-label="Ideas to impact sticky note"
+            style={poseStyle("note")}
+          >
+            <div className={styles.stickyNote}>Ideas <span>→</span><br />Impact</div>
+          </div>
+
+          <button
+            type="button"
+            className={styles.creativeToggle}
+            aria-pressed={creativeMode}
+            onClick={() => setCreativeMode((value) => !value)}
+          >
+            <span aria-hidden="true">✳</span> {creativeMode ? "Exit Creative Mode" : "Creative Mode"}
+          </button>
         </div>
       </div>
 
-      {/* Scroll cue */}
-      <motion.a
-        href="#about"
-        aria-label="Scroll to about"
-        style={{ opacity: fade }}
-        className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2 label-mono text-ink/60"
-      >
-        Scroll
-        <Arrow className="h-4 w-9 rotate-90 text-pop-red" />
-      </motion.a>
+      <ul className={styles.statsStrip} aria-label="Selected impact stats">
+        <li className={styles.stat}>
+          <StatMark type="linkedin" />
+          <div><strong>12K+</strong><span>LinkedIn Followers</span></div>
+        </li>
+        <li className={styles.stat}>
+          <StatMark type="people" />
+          <div><strong>120+</strong><span>Rotaract Projects</span></div>
+        </li>
+        <li className={styles.stat}>
+          <StatMark type="years" />
+          <div><strong>5+</strong><span>Years</span></div>
+        </li>
+        <li className={styles.stat}>
+          <StatMark type="views" />
+          <div><strong>5M+</strong><span>Views &amp; Impressions</span></div>
+        </li>
+      </ul>
+
+      <div className={styles.scrollCue}>
+        <motion.a
+          href="#featured-work"
+          aria-label="Scroll to featured work"
+          style={{ opacity: cueOpacity }}
+        >
+          <span>Scroll to explore</span><Arrow className="h-5 w-9 rotate-90 text-pop-red" />
+        </motion.a>
+      </div>
+
+      {creativeMode && typeof document !== "undefined" && createPortal(
+        <aside className={styles.creativePanel} aria-label="Creative mode controls">
+          <div className={styles.panelHeading}>
+            <div><strong>Creative Mode</strong><span>Drag an element or use the arrow keys.</span></div>
+            <button type="button" onClick={() => setCreativeMode(false)} aria-label="Close Creative Mode">×</button>
+          </div>
+          <label className={styles.controlLabel} htmlFor="hero-layer-select">Selected element</label>
+          <select id="hero-layer-select" value={selectedLayer} onChange={(event) => setSelectedLayer(event.target.value as LayerId)}>
+            {LAYERS.map((layer) => <option key={layer.id} value={layer.id}>{layer.label}</option>)}
+          </select>
+          <label className={styles.rangeLabel} htmlFor="hero-layer-size"><span>Size</span><output>{Math.round(({ ...EMPTY_POSE, ...layouts[selectedLayer] }).scale * 100)}%</output></label>
+          <input
+            id="hero-layer-size"
+            type="range"
+            min="65"
+            max="140"
+            value={Math.round(({ ...EMPTY_POSE, ...layouts[selectedLayer] }).scale * 100)}
+            onChange={(event) => setPose(selectedLayer, { scale: Number(event.target.value) / 100 })}
+          />
+          <label className={styles.rangeLabel} htmlFor="hero-layer-rotation"><span>Rotation</span><output>{Math.round(({ ...EMPTY_POSE, ...layouts[selectedLayer] }).rotate)}°</output></label>
+          <input
+            id="hero-layer-rotation"
+            type="range"
+            min="-30"
+            max="30"
+            value={Math.round(({ ...EMPTY_POSE, ...layouts[selectedLayer] }).rotate)}
+            onChange={(event) => setPose(selectedLayer, { rotate: Number(event.target.value) })}
+          />
+          <button type="button" className={styles.resetLayout} onClick={resetScene}>Reset saved layout</button>
+          <p className={styles.savedHint}>Your layout saves on this device.</p>
+        </aside>,
+        document.body,
+      )}
     </section>
   );
 }
