@@ -158,7 +158,7 @@ export const experience: readonly ExperienceJob[] = [
   {
     company: "Bling Square Events",
     role: "Growth Strategist Intern",
-    period: "[FILL IN: dates]",
+    period: "June 2025 — Aug 2025",
     body: "Growth and partnerships — engaging clients and prospects to deepen existing relationships and open new opportunities.",
   },
   {
@@ -215,11 +215,11 @@ export const moments = [
     size: "tall",
   },
   {
-    src: "/photos/moment-event.jpeg",
+    src: "/photos/moment-sammie-social-samosa.png",
     title: "Sammie by Social Samosa",
     caption:
       "At the Best Social Media Brands Summit, co-powered by Snapchat — rooms full of the people shaping the feed.",
-    alt: "Romil Lodaya laughing in a purple blazer at a summit event",
+    alt: "Romil Lodaya smiling and giving a thumbs up in front of the Sammie by Social Samosa summit display",
     size: "wide",
   },
   {
@@ -298,7 +298,7 @@ export const tools = [
   { name: "Claude", slug: "claude", color: "#D97757" },
   { name: "OpenAI", slug: "openai", color: "#0D0D0D" },
   { name: "Canva", slug: "canva", color: "#00C4CC" },
-  { name: "Asana", slug: "asana", color: "#F06A6A" },
+  { name: "Meta Business Suite", slug: "meta", color: "#0866FF" },
   { name: "Slack", slug: "slack", color: "#4A154B" },
   { name: "Trello", slug: "trello", color: "#0052CC" },
 ] as const;
