@@ -1,115 +1,250 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useAnimationFrame, useMotionValue, useReducedMotion } from "framer-motion";
 import { contact } from "@/lib/content";
-import { staggerContainer, riseIn, riseInLg, inViewProps } from "@/lib/motion";
 import { Magnetic } from "./Magnetic";
-import { Star, Spark } from "./ui/Doodles";
 import { burst } from "@/lib/confetti";
 import { ContactForm } from "./ContactForm";
+import styles from "./Contact.module.css";
 
-// Four distinct colors, none matching the blue section background.
-const cardColors = [
-  "bg-pop-red",
-  "bg-pop-green",
-  "bg-pop-purple",
-  "bg-pop-orange",
-];
+const cardColors = [styles.cardRed, styles.cardGreen, styles.cardPurple, styles.cardOrange];
+
+const stars = [
+  { id: "spark-one", label: "first star", symbol: "✦", className: styles.starOne },
+  { id: "spark-two", label: "second star", symbol: "✧", className: styles.starTwo },
+  { id: "spark-three", label: "third star", symbol: "✳", className: styles.starThree },
+] as const;
+
+const flightPath = "M 14 112 C 42 55, 90 58, 116 110 S 180 172, 208 116 S 258 62, 286 112 C 264 174, 204 185, 160 143 S 60 65, 14 112";
 
 export function Contact() {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const flightZoneRef = useRef<HTMLDivElement>(null);
+  const flightPathRef = useRef<SVGPathElement>(null);
+  const flightLength = useRef(0);
+  const reduceMotion = useReducedMotion();
+  const [collected, setCollected] = useState<string[]>([]);
+  const planeX = useMotionValue(-15);
+  const planeY = useMotionValue(0);
+  const planeRotation = useMotionValue(0);
+
+  useEffect(() => {
+    const path = flightPathRef.current;
+    const stage = flightZoneRef.current;
+    const transform = path?.getScreenCTM();
+    if (!path || !stage || !transform) return;
+
+    flightLength.current = path.getTotalLength();
+    const point = path.getPointAtLength(0);
+    const ahead = path.getPointAtLength(2);
+    const screenPoint = new DOMPoint(point.x, point.y).matrixTransform(transform);
+    const screenAhead = new DOMPoint(ahead.x, ahead.y).matrixTransform(transform);
+    const bounds = stage.getBoundingClientRect();
+    planeX.set(screenPoint.x - bounds.left - 30);
+    planeY.set(screenPoint.y - bounds.top - 30);
+    planeRotation.set(
+      Math.atan2(screenAhead.y - screenPoint.y, screenAhead.x - screenPoint.x) * (180 / Math.PI) + 43,
+    );
+  }, [planeRotation, planeX, planeY]);
+
+  useAnimationFrame((time) => {
+    const path = flightPathRef.current;
+    const stage = flightZoneRef.current;
+    if (reduceMotion || document.visibilityState !== "visible" || !path || !stage) return;
+
+    if (!flightLength.current) flightLength.current = path.getTotalLength();
+    const distance = ((time % 14000) / 14000) * flightLength.current;
+    const point = path.getPointAtLength(distance);
+    const ahead = path.getPointAtLength(Math.min(distance + 2, flightLength.current));
+    const transform = path.getScreenCTM();
+    if (!transform) return;
+
+    const screenPoint = new DOMPoint(point.x, point.y).matrixTransform(transform);
+    const screenAhead = new DOMPoint(ahead.x, ahead.y).matrixTransform(transform);
+    const bounds = stage.getBoundingClientRect();
+    planeX.set(screenPoint.x - bounds.left - 30);
+    planeY.set(screenPoint.y - bounds.top - 30);
+    planeRotation.set(
+      Math.atan2(screenAhead.y - screenPoint.y, screenAhead.x - screenPoint.x) * (180 / Math.PI) + 43,
+    );
+  });
+
+  const collectStar = (id: string) => {
+    setCollected((current) => current.includes(id) ? current : [...current, id]);
+  };
+
   return (
     <section
       id="contact"
-      className="relative overflow-hidden bg-electric py-24 text-white sm:py-32"
+      className={styles.section}
+      aria-labelledby="contact-title"
     >
-      <Star className="absolute right-[12%] top-16 hidden h-12 w-12 animate-spin-slow text-gold sm:block" />
-      <Spark className="absolute bottom-24 left-[8%] hidden h-8 w-8 text-pop-pink lg:block" />
-
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-        <motion.div
-          variants={staggerContainer(0.1)}
-          {...inViewProps}
-          className="max-w-4xl"
-        >
-          <motion.span
-            variants={riseIn}
-            className="inline-flex items-center gap-2 rounded-full border-2 border-ink bg-gold px-4 py-1.5 label-mono text-ink shadow-[3px_3px_0_0_#15121c]"
-          >
-            <Star className="h-3 w-3" /> Let&apos;s talk
-          </motion.span>
-          <motion.h2
-            variants={riseInLg}
-            className="ts-hard mt-6 font-display text-[clamp(3rem,1.4rem+7vw,7.5rem)] leading-[0.88] tracking-tightest"
-          >
-            {contact.headline}
-          </motion.h2>
-          <motion.p
-            variants={riseIn}
-            className="mt-6 max-w-2xl text-xl font-medium text-white/90 sm:text-2xl"
-          >
-            {contact.sub}
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          variants={riseIn}
-          {...inViewProps}
-          className="mt-12 max-w-2xl"
-        >
-          <ContactForm />
-        </motion.div>
-
-        <motion.p
-          variants={riseIn}
-          {...inViewProps}
-          className="mt-16 mb-6 label-mono text-white/70"
-        >
-          Or reach me directly
-        </motion.p>
-
-        <motion.div
-          variants={staggerContainer(0.1, 0.1)}
-          {...inViewProps}
-          className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
-        >
-          {contact.links.map((l, i) => (
-            <motion.div key={l.label} variants={riseIn}>
-              <Magnetic strength={0.25}>
-                <a
-                  href={l.href}
-                  data-cursor="Open"
-                  target={l.href.startsWith("http") ? "_blank" : undefined}
-                  rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  onClick={(e) => burst(e.clientX, e.clientY)}
-                  className={`group flex h-full flex-col justify-between gap-10 rounded-3xl border-4 border-ink ${
-                    cardColors[i % cardColors.length]
-                  } p-6 text-white shadow-[6px_6px_0_0_#15121c] transition-all duration-200 hover:-translate-y-1.5 hover:shadow-[10px_10px_0_0_#15121c]`}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="ts-hard font-display text-2xl">{l.label}</span>
-                    <span
-                      className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-ink bg-paper text-ink transition-transform duration-200 group-hover:rotate-45"
-                      aria-hidden="true"
-                    >
-                      ↗
-                    </span>
-                  </div>
-                  <span className="text-sm font-medium text-white/80">
-                    {l.handle}
-                  </span>
-                </a>
-              </Magnetic>
+      <div className={styles.container}>
+        <div className={styles.heroGrid}>
+          <div className={styles.copyColumn}>
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: reduceMotion ? 0 : 0.5 }}
+            >
+              <span className={styles.kicker}>
+                <span aria-hidden="true">✦</span> Let&apos;s connect
+              </span>
+              <h1 id="contact-title" className={styles.headline}>
+                <span>Got an</span>
+                <span>interesting</span>
+                <span>problem?</span>
+              </h1>
             </motion.div>
-          ))}
-        </motion.div>
 
-        <motion.p
-          variants={riseIn}
-          {...inViewProps}
-          className="mt-16 font-display text-2xl sm:text-4xl"
-        >
-          {contact.closer}
-        </motion.p>
+            <motion.div
+              className={styles.formPanel}
+              initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : 0.1 }}
+            >
+              <ContactForm />
+            </motion.div>
+          </div>
+
+          <aside
+            className={styles.doodleStage}
+            ref={stageRef}
+            aria-labelledby="doodle-title"
+          >
+            <h2 id="doodle-title" className={styles.visuallyHidden}>
+              Play with the stars
+            </h2>
+
+            <div className={styles.stageTop}>
+              <div className={styles.stickyNote} aria-hidden="true">
+                <span>Same energy.<br />Different chapters.</span>
+              </div>
+              <svg className={styles.noteAccent} viewBox="0 0 54 48" aria-hidden="true">
+                <path d="M8 42 17 8m6 31L34 3m3 39 10-26" />
+              </svg>
+              <span className={`${styles.twinkleGlyph} ${styles.topSpark}`} aria-hidden="true">✦</span>
+            </div>
+
+            <div className={styles.flightZone} ref={flightZoneRef}>
+              <svg className={styles.flightRoute} viewBox="0 0 300 220" preserveAspectRatio="none" aria-hidden="true">
+                <path ref={flightPathRef} d={flightPath} />
+              </svg>
+              <motion.div
+                className={styles.paperPlane}
+                style={{ x: planeX, y: planeY, rotate: planeRotation }}
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 82 82">
+                  <path d="M5 35 76 7 54 76 38 49 5 35Z" />
+                  <path d="m38 49 38-42-48 34" />
+                </svg>
+              </motion.div>
+
+              <motion.div
+                className={styles.smileFace}
+                drag
+                dragConstraints={stageRef}
+                dragMomentum={false}
+                whileDrag={reduceMotion ? undefined : { scale: 1.08, rotate: 8 }}
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" />
+                  <circle className={styles.faceEye} cx="35" cy="40" r="4" />
+                  <circle className={styles.faceEye} cx="64" cy="40" r="4" />
+                  <path className={styles.faceSmile} d="M29 57c5 19 37 23 44 0" />
+                </svg>
+              </motion.div>
+
+              {stars.map((star, index) => {
+                const found = collected.includes(star.id);
+                return (
+                  <motion.button
+                    key={star.id}
+                    type="button"
+                    className={`${styles.starDoodle} ${star.className} ${found ? styles.starFound : ""}`}
+                    aria-label={`${found ? "Collected" : "Collect"} ${star.label}; drag it around or tap it`}
+                    aria-pressed={found}
+                    disabled={found}
+                    drag={!found}
+                    dragConstraints={stageRef}
+                    dragMomentum={false}
+                    whileDrag={reduceMotion ? undefined : { scale: 1.3, rotate: 25 }}
+                    whileHover={!found && !reduceMotion ? { scale: 1.18, rotate: -12 } : undefined}
+                    animate={{ opacity: found ? 0 : 1, scale: found ? 0 : 1 }}
+                    transition={{ duration: reduceMotion ? 0 : 0.35, delay: reduceMotion ? 0 : index * 0.12 }}
+                    onClick={() => collectStar(star.id)}
+                  >
+                    <span className={styles.twinkleGlyph} aria-hidden="true">{star.symbol}</span>
+                  </motion.button>
+                );
+              })}
+            </div>
+
+            <div className={styles.stageFooter}>
+              <p className={styles.ideasNote}>Good ideas start with a hello.</p>
+              <div className={styles.gameHint} role="status" aria-live="polite">
+                <span className={styles.gameScore}>
+                  {collected.length === stars.length ? "All stars found!" : `${collected.length} / ${stars.length} stars`}
+                </span>
+                <span>{collected.length === stars.length ? "Lovely work." : "Tap or drag to collect them."}</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <div className={styles.directSection}>
+          <div className={styles.directLabel}>
+            <p>Or reach me directly</p>
+            <svg viewBox="0 0 54 48" aria-hidden="true">
+              <path d="M42 4C37 25 24 34 9 37m0 0 13 4M9 37l8-12" />
+            </svg>
+          </div>
+
+          <div className={styles.linksGrid}>
+            {contact.links.map((link, index) => {
+              const href = link.label === "Website" ? "/" : link.href;
+              const external = href.startsWith("http");
+
+              return (
+                <motion.div
+                  key={link.label}
+                  initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.4, delay: reduceMotion ? 0 : index * 0.07 }}
+                >
+                  <Magnetic strength={0.22}>
+                    <a
+                      href={href}
+                      data-cursor="Open"
+                      target={external ? "_blank" : undefined}
+                      rel={external ? "noopener noreferrer" : undefined}
+                      onClick={(event) => burst(event.clientX, event.clientY)}
+                      className={`${styles.contactLink} ${cardColors[index % cardColors.length]}`}
+                    >
+                      <span className={styles.linkTop}>
+                        <span className={styles.linkTitle}>{link.label}</span>
+                        <span className={styles.linkArrow} aria-hidden="true">↗</span>
+                      </span>
+                      <span className={styles.linkHandle}>{link.handle}</span>
+                    </a>
+                  </Magnetic>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className={styles.closingCard}>
+          <div>
+            <span className={styles.closingKicker}>Your next chapter starts here</span>
+            <p>Let&apos;s make something good.</p>
+          </div>
+          <span className={styles.closingSpark} aria-hidden="true">✦</span>
+        </div>
       </div>
     </section>
   );

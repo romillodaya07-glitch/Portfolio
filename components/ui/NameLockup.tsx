@@ -42,7 +42,7 @@ export function NameLockup({
                     color: NAME_HOVER[index % NAME_HOVER.length],
                     transition: { type: "spring", stiffness: 500, damping: 12 },
                   }}
-                  className={`inline-block cursor-pointer select-none transition-colors duration-200 ${letter === "O" ? "text-pop-red" : "text-ink"}`}
+                  className={`inline-block cursor-pointer select-none transition-colors duration-200 ${index === 0 ? "text-pop-red" : "text-ink"}`}
                 >
                   {letter}
                 </motion.span>

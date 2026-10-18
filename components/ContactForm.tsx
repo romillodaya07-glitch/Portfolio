@@ -92,7 +92,7 @@ export function ContactForm() {
       noValidate
       className="rounded-3xl border-4 border-ink bg-card p-6 text-ink shadow-[8px_8px_0_0_#15121c] sm:p-8"
     >
-      <h3 className="ts-pop font-display text-3xl">Send a message</h3>
+      <h3 className="ts-hard font-display text-3xl">Send me a message.</h3>
 
       {/* Honeypot — hidden from humans */}
       <div aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 overflow-hidden">

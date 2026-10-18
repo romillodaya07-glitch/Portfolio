@@ -311,7 +311,7 @@ export const contact = {
   links: [
     {
       label: "Website",
-      handle: "romil-lodaya.vercel.app",
+      handle: "My portfolio",
       href: "https://romil-lodaya.vercel.app/",
       accent: "electric",
     },
