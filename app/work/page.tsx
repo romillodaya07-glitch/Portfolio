@@ -3,6 +3,7 @@ import { WhatIDo } from "@/components/WhatIDo";
 import { Experience } from "@/components/Experience";
 import { Brands } from "@/components/Brands";
 import { Tools } from "@/components/Tools";
+import { Certificates } from "@/components/Certificates";
 import { Services } from "@/components/Services";
 import { meta } from "@/lib/content";
 
@@ -19,6 +20,7 @@ export default function WorkPage() {
       <Experience />
       <Brands />
       <Tools />
+      <Certificates />
       <Services />
     </div>
   );
