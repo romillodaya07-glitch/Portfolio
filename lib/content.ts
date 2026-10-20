@@ -72,6 +72,66 @@ export const ethos = {
   ],
 } as const;
 
+/** Practice briefs for the About-page idea lab. Scenarios and success signals are illustrative. */
+export const ideaLabChallenges = [
+  {
+    id: "gen-z-cafe",
+    icon: "☕",
+    title: "Launch a Café for Gen Z",
+    prompt: "Make a café feel like a community people want to return to.",
+    color: "pink",
+    steps: [
+      { label: "Audience Insight", detail: "Students want an affordable third place where they can work, meet, and feel part of something." },
+      { label: "Big Idea", detail: "A café with a seat for every kind of day: focus tables, friend corners, and small community rituals." },
+      { label: "Strategy", detail: "Lead with belonging and useful routines, then make the menu and offers easy to share." },
+      { label: "Execution", detail: "Host creator study hours, open-mic evenings, a campus regulars card, and a weekly community menu vote." },
+      { label: "Impact", detail: "Track repeat visits, event attendance, member referrals, and saves or shares of local content." },
+    ],
+  },
+  {
+    id: "boring-brand",
+    icon: "✨",
+    title: "Make a Boring Brand Interesting",
+    prompt: "Find a human point of view hiding in an ordinary category.",
+    color: "purple",
+    steps: [
+      { label: "Audience Insight", detail: "People ignore category messages that all sound polished, predictable, and interchangeable." },
+      { label: "Big Idea", detail: "Give the brand one memorable opinion that makes its everyday usefulness feel worth talking about." },
+      { label: "Strategy", detail: "Build a distinctive voice around a real customer tension, then repeat it consistently." },
+      { label: "Execution", detail: "Turn that voice into a social series, quick creator collaborations, and product stories from real routines." },
+      { label: "Impact", detail: "Look for stronger recall, meaningful comments, branded searches, and consideration over time." },
+    ],
+  },
+  {
+    id: "sustainable-lifestyle",
+    icon: "🌱",
+    title: "Build a Sustainable Lifestyle Brand",
+    prompt: "Make a lower-impact choice feel practical, desirable, and daily.",
+    color: "mint",
+    steps: [
+      { label: "Audience Insight", detail: "Good intentions can stall when sustainable choices feel expensive, confusing, or inconvenient." },
+      { label: "Big Idea", detail: "Small swaps, made easier: show the useful difference one realistic habit can make." },
+      { label: "Strategy", detail: "Remove friction with clear proof, honest trade-offs, and products designed for repeat use." },
+      { label: "Execution", detail: "Create simple how-to content, refill or repair moments, and community-led progress stories." },
+      { label: "Impact", detail: "Measure trial, repeat use, refill participation, customer understanding, and verified waste avoided." },
+    ],
+  },
+  {
+    id: "fitness-community",
+    icon: "🏋️",
+    title: "Grow a Fitness Community",
+    prompt: "Help beginners feel welcome enough to show up again.",
+    color: "blue",
+    steps: [
+      { label: "Audience Insight", detail: "Starting can feel intimidating when every fitness space seems built for people who already know the rules." },
+      { label: "Big Idea", detail: "Progress has many starting lines. Celebrate showing up, not just hitting a personal best." },
+      { label: "Strategy", detail: "Create an inclusive routine with beginner-friendly entry points and peer encouragement." },
+      { label: "Execution", detail: "Run small-group starter sessions, member check-ins, progress prompts, and a no-judgment social challenge." },
+      { label: "Impact", detail: "Track first-to-second visit rate, community participation, retention, and member-reported confidence." },
+    ],
+  },
+] as const;
+
 /** What I Do — three pillars. */
 export const pillars = [
   {
