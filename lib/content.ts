@@ -129,7 +129,7 @@ export type ExperienceJob = {
 export const experience: readonly ExperienceJob[] = [
   {
     company: "Wottl",
-    period: "Jan 2025 — Present · 1 yr 9 mos",
+    period: "Jan 2025 — Sept 2026 · 1 yr 9 mos",
     location: "Remote",
     body: "Working shoulder-to-shoulder with the founder across hiring, operations, and online reputation — and moderating 3,500+ community comments to keep the brand's voice consistent at scale.",
     roles: [
@@ -270,7 +270,7 @@ export const services = [
   {
     no: "01",
     title: "Brand & Growth Strategy",
-    body: "Positioning, messaging, and a clear plan to grow — turning chaos into an actionable roadmap you can run with.",
+    body: "Positioning, messaging, and a clear plan to grow: turning chaos into an actionable roadmap you can run with.",
     accent: "blue",
   },
   {
@@ -282,7 +282,7 @@ export const services = [
   {
     no: "03",
     title: "People & Operations",
-    body: "Hiring, culture, and the systems behind a growing team — bringing out the best in the people doing the work.",
+    body: "Hiring, culture, and the systems behind a growing team: bringing out the best in the people doing the work.",
     accent: "purple",
   },
 ] as const;
