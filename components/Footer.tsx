@@ -1,6 +1,6 @@
 "use client";
 
-import { footer, meta, contact, taglines } from "@/lib/content";
+import { footer, contact } from "@/lib/content";
 
 export function Footer() {
   return (
@@ -30,9 +30,7 @@ export function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col gap-3 border-t border-paper/15 pt-8 label-mono text-paper/40 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {footer.year} {meta.name} — {taglines[4]}
-          </p>
+          <p>A WORK IN PROGRESS. ALWAYS.</p>
           <p>{footer.builtBy}</p>
         </div>
       </div>
