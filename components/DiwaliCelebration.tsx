@@ -122,8 +122,8 @@ export function DiwaliCelebration() {
               style={{
                 left: `${origin.x * 100}%`,
                 top: `${origin.y * 100}%`,
-                marginLeft: "-34vmax",
-                marginTop: "-34vmax",
+              marginLeft: "-34vmax",
+              marginTop: "-34vmax",
                 width: "68vmax",
                 height: "68vmax",
                 background:
@@ -195,16 +195,16 @@ export function DiwaliCelebration() {
 
             <motion.div
               id="diwali-greeting"
-              className="absolute inset-x-0 top-[18%] z-10 mx-auto w-[min(90vw,34rem)] rounded-3xl border-2 border-ink bg-card px-5 py-4 text-center text-ink shadow-[5px_5px_0_0_#15121c] sm:px-7 sm:py-5"
+              className="absolute bottom-5 left-1/2 top-auto z-10 mx-0 w-[min(90vw,22rem)] -translate-x-1/2 rounded-2xl border-2 border-ink bg-card/90 px-4 py-3 text-center text-ink shadow-[4px_4px_0_0_#15121c] backdrop-blur-sm sm:bottom-auto sm:left-auto sm:right-6 sm:top-[18%] sm:translate-x-0 sm:w-[min(76vw,24rem)] sm:px-5 sm:py-4"
               initial={reduceMotion ? false : { y: 16, scale: 0.94, opacity: 0 }}
               animate={{ y: 0, scale: 1, opacity: 1 }}
               transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : 0.22, type: "spring", stiffness: 220, damping: 20 }}
             >
               <span className="mb-1 block text-xl" aria-hidden="true">✨ 🪔 ✨</span>
-              <span className="block font-display text-lg font-black leading-tight sm:text-2xl">
+              <span className="block font-display text-base font-black leading-tight sm:text-lg">
                 A little light goes a long way.
               </span>
-              <span className="mt-1 block text-sm font-bold text-ink/70 sm:text-base">
+              <span className="mt-1 block text-xs font-bold text-ink/70 sm:text-sm">
                 Happy Diwali!
               </span>
             </motion.div>
