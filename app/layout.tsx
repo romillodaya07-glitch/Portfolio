@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Anton, Patrick_Hand, Sora } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { meta } from "@/lib/content";
 import { SmoothScroll } from "@/components/SmoothScroll";
@@ -84,6 +85,7 @@ export default function RootLayout({
           </main>
           <Footer />
         </SmoothScroll>
+        <Analytics />
       </body>
     </html>
   );
