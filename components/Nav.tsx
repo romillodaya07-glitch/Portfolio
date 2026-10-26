@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { navRoutes } from "@/lib/content";
 import { Magnetic } from "./Magnetic";
 import { burst } from "@/lib/confetti";
+import { DiwaliCelebration } from "./DiwaliCelebration";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -64,7 +65,8 @@ export function Nav() {
           })}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-3 md:flex">
+          {pathname === "/" && <DiwaliCelebration />}
           <Magnetic strength={0.5}>
             <Link
               href="/contact"
@@ -78,26 +80,29 @@ export function Nav() {
           </Magnetic>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-label={open ? "Close menu" : "Open menu"}
-          className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border-2 border-ink bg-card shadow-[3px_3px_0_0_#15121c] md:hidden"
-        >
-          <span className="relative block h-3 w-5">
-            <span
-              className={`absolute left-0 block h-0.5 w-5 bg-ink transition-all ${
-                open ? "top-1.5 rotate-45" : "top-0"
-              }`}
-            />
-            <span
-              className={`absolute left-0 top-3 block h-0.5 w-5 bg-ink transition-all ${
-                open ? "-rotate-45 !top-1.5" : ""
-              }`}
-            />
-          </span>
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          {pathname === "/" && <DiwaliCelebration />}
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-label={open ? "Close menu" : "Open menu"}
+            className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border-2 border-ink bg-card shadow-[3px_3px_0_0_#15121c]"
+          >
+            <span className="relative block h-3 w-5">
+              <span
+                className={`absolute left-0 block h-0.5 w-5 bg-ink transition-all ${
+                  open ? "top-1.5 rotate-45" : "top-0"
+                }`}
+              />
+              <span
+                className={`absolute left-0 top-3 block h-0.5 w-5 bg-ink transition-all ${
+                  open ? "-rotate-45 !top-1.5" : ""
+                }`}
+              />
+            </span>
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
