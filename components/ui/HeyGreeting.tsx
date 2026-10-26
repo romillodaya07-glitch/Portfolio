@@ -19,35 +19,6 @@ export function HeyGreeting({
 
   return (
     <div className="relative inline-flex items-center gap-1 sm:gap-2 select-none mb-1 sm:mb-2 ml-1">
-      <motion.svg
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.1, type: "spring", stiffness: 400 }}
-        viewBox="0 0 34 34"
-        fill="none"
-        className="w-5 h-5 sm:w-7 sm:h-7 text-ink shrink-0 -translate-y-1"
-        aria-hidden="true"
-      >
-        <motion.path
-          d="M 5 21 L 18 16"
-          stroke="currentColor"
-          strokeWidth="2.8"
-          strokeLinecap="round"
-        />
-        <motion.path
-          d="M 10 12 L 20 2"
-          stroke="currentColor"
-          strokeWidth="2.8"
-          strokeLinecap="round"
-        />
-        <motion.path
-          d="M 23 13 L 28 3"
-          stroke="currentColor"
-          strokeWidth="2.8"
-          strokeLinecap="round"
-        />
-      </motion.svg>
-
       <motion.button
         type="button"
         onClick={cycleGreeting}
@@ -59,6 +30,35 @@ export function HeyGreeting({
         transition={{ duration: 0.4, delay: 0.15, type: "spring" }}
         className="group relative cursor-pointer font-hand text-lg sm:text-xl md:text-2xl font-normal tracking-wide text-ink -rotate-[8deg] normal-case not-italic focus:outline-none"
       >
+        <motion.svg
+          initial={{ y: 3, scale: 0, opacity: 0 }}
+          animate={{ y: 0, scale: 1, opacity: 1 }}
+          whileHover={{ y: -2, rotate: 5 }}
+          transition={{ duration: 0.4, delay: 0.1, type: "spring", stiffness: 400 }}
+          viewBox="0 0 28 22"
+          fill="none"
+          className="absolute -top-4 left-1 z-20 h-4 w-6 text-ink sm:-top-5 sm:h-5 sm:w-7"
+          aria-hidden="true"
+        >
+          <motion.path
+            d="M3 4.5 9 10l5-7.5 5 7.5 6-5.5-2.5 12H5.5L3 4.5Z"
+            fill="#FFD527"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <motion.path
+            d="M6 20h16"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+          />
+          <motion.circle cx="3" cy="4" r="1.2" fill="#FF4B3E" />
+          <motion.circle cx="14" cy="2.5" r="1.2" fill="#FF4B3E" />
+          <motion.circle cx="25" cy="4" r="1.2" fill="#FF4B3E" />
+        </motion.svg>
+
         <span className="relative z-10 flex items-center gap-1">
           <AnimatePresence mode="wait">
             <motion.span
