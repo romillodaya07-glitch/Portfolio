@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { moments, momentsIntro } from "@/lib/content";
 import { ResumePanel } from "./ResumePanel";
 import styles from "./Moments.module.css";
@@ -21,6 +23,36 @@ const orderedMoments = momentOrder
 
 export function Moments() {
   const reduceMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+  const [selectedMoment, setSelectedMoment] = useState<(typeof orderedMoments)[number] | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    if (!selectedMoment) return;
+
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedMoment(null);
+      if (event.key === "Tab") {
+        event.preventDefault();
+        closeButtonRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+      previouslyFocusedRef.current?.focus();
+    };
+  }, [selectedMoment]);
 
   return (
     <main id="moments" className={styles.page}>
@@ -49,14 +81,23 @@ export function Moments() {
             transition={reduceMotion ? { duration: 0 } : { duration: 0.48, delay: index * 0.045 }}
           >
             <div className={styles.photoFrame}>
-              <Image
-                src={moment.src}
-                alt={moment.alt}
-                fill
-                loading="lazy"
-                sizes="(max-width: 680px) 94vw, (max-width: 1024px) 46vw, 34vw"
-                className={styles.photo}
-              />
+              <motion.button
+                type="button"
+                className={styles.photoButton}
+                onClick={() => setSelectedMoment(moment)}
+                whileTap={reduceMotion ? undefined : { scale: 0.985 }}
+                aria-label={`View full image: ${moment.title}`}
+              >
+                <Image
+                  src={moment.src}
+                  alt={moment.alt}
+                  fill
+                  loading="lazy"
+                  sizes="(max-width: 680px) 94vw, (max-width: 1024px) 46vw, 34vw"
+                  className={styles.photo}
+                />
+                <span className={styles.zoomHint} aria-hidden="true">View photo ↗</span>
+              </motion.button>
               <span className={styles.tape} aria-hidden="true" />
               <figcaption className={styles.caption}>
                 <h2>{moment.title}</h2>
@@ -68,6 +109,60 @@ export function Moments() {
       </div>
 
       <ResumePanel />
+
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {selectedMoment && (
+              <motion.div
+                className={styles.lightboxBackdrop}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: reduceMotion ? 0 : 0.22 }}
+                onClick={() => setSelectedMoment(null)}
+              >
+                <motion.section
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="moment-lightbox-title"
+                  className={styles.lightbox}
+                  initial={reduceMotion ? false : { opacity: 0, scale: 0.94, y: 16 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 10 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 25 }}
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <button
+                    ref={closeButtonRef}
+                    type="button"
+                    className={styles.lightboxClose}
+                    onClick={() => setSelectedMoment(null)}
+                    aria-label="Close full image"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                  <div className={styles.lightboxPhoto}>
+                    <Image
+                      src={selectedMoment.src}
+                      alt={selectedMoment.alt}
+                      fill
+                      sizes="(max-width: 680px) 94vw, 90vw"
+                      className={styles.lightboxImage}
+                      priority
+                    />
+                  </div>
+                  <div className={styles.lightboxCaption}>
+                    <h2 id="moment-lightbox-title">{selectedMoment.title}</h2>
+                    <p>{selectedMoment.caption}</p>
+                    <span>Press Esc or click outside to close</span>
+                  </div>
+                </motion.section>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
     </main>
   );
 }
