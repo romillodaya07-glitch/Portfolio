@@ -16,9 +16,15 @@ export function ChristmasToggle() {
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("romil-christmas-theme") === "on";
-    setEnabled(saved);
-    if (saved) document.documentElement.dataset.theme = "christmas";
+    const syncTheme = () => {
+      const saved = window.localStorage.getItem("romil-christmas-theme") === "on";
+      setEnabled(saved);
+      if (saved) document.documentElement.dataset.theme = "christmas";
+      else delete document.documentElement.dataset.theme;
+    };
+    syncTheme();
+    window.addEventListener("romil-christmas-theme-change", syncTheme);
+    return () => window.removeEventListener("romil-christmas-theme-change", syncTheme);
   }, []);
 
   const toggleTheme = () => {
@@ -31,6 +37,7 @@ export function ChristmasToggle() {
       window.localStorage.removeItem("romil-christmas-theme");
     }
     setEnabled(next);
+    window.dispatchEvent(new Event("romil-christmas-theme-change"));
   };
 
   return (
