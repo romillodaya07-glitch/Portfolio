@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { navRoutes } from "@/lib/content";
 import { Magnetic } from "./Magnetic";
 import { burst } from "@/lib/confetti";
-import { DiwaliCelebration } from "./DiwaliCelebration";
+import { ChristmasToggle } from "./DiwaliCelebration";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -66,7 +66,7 @@ export function Nav() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          {pathname === "/" && <DiwaliCelebration />}
+          <ChristmasToggle />
           <Magnetic strength={0.5}>
             <Link
               href="/contact"
