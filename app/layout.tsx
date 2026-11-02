@@ -3,6 +3,7 @@ import { Anton, Patrick_Hand, Sora } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { meta } from "@/lib/content";
+import { socialMetadata } from "@/lib/social";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { CustomCursor } from "@/components/CustomCursor";
 import { Nav } from "@/components/Nav";
@@ -49,18 +50,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  openGraph: {
-    title: meta.title,
-    description: meta.description,
-    type: "website",
-    url: "/",
-    images: [
-      {
-        url: "/photos/portrait-studio.jpeg",
-        alt: "Romil Lodaya",
-      },
-    ],
-  },
+  ...socialMetadata(meta.title, meta.description, "/"),
 };
 
 const personJsonLd = {

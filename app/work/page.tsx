@@ -6,19 +6,16 @@ import { Tools } from "@/components/Tools";
 import { Certificates } from "@/components/Certificates";
 import { Services } from "@/components/Services";
 import { meta } from "@/lib/content";
+import { socialMetadata } from "@/lib/social";
+
+const title = `Work — ${meta.name}`;
+const description = "Strategy, marketing, and people — experience, brands, and the daily stack.";
 
 export const metadata: Metadata = {
-  title: `Work — ${meta.name}`,
-  description:
-    "Strategy, marketing, and people — experience, brands, and the daily stack.",
+  title,
+  description,
   alternates: { canonical: "/work" },
-  openGraph: {
-    title: `Work — ${meta.name}`,
-    description:
-      "Strategy, marketing, and people — experience, brands, and the daily stack.",
-    type: "website",
-    url: "/work",
-  },
+  ...socialMetadata(title, description, "/work"),
 };
 
 export default function WorkPage() {

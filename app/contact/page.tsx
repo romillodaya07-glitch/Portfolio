@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
 import { Contact } from "@/components/Contact";
 import { meta } from "@/lib/content";
+import { socialMetadata } from "@/lib/social";
+
+const title = `Contact — ${meta.name}`;
+const description = "Let's connect. Let's grow. Let's build.";
 
 export const metadata: Metadata = {
-  title: `Contact — ${meta.name}`,
-  description: "Let's connect. Let's grow. Let's build.",
+  title,
+  description,
   alternates: { canonical: "/contact" },
-  openGraph: {
-    title: `Contact — ${meta.name}`,
-    description: "Let's connect. Let's grow. Let's build.",
-    type: "website",
-    url: "/contact",
-  },
+  ...socialMetadata(title, description, "/contact"),
 };
 
 export default function ContactPage() {

@@ -5,17 +5,13 @@ import { Ticker } from "@/components/Ticker";
 import { Explore } from "@/components/Explore";
 import { StickerPlayground } from "@/components/StickerPlayground";
 import { meta } from "@/lib/content";
+import { socialMetadata } from "@/lib/social";
 
 export const metadata: Metadata = {
   title: meta.title,
   description: meta.description,
   alternates: { canonical: "/" },
-  openGraph: {
-    title: meta.title,
-    description: meta.description,
-    type: "website",
-    url: "/",
-  },
+  ...socialMetadata(meta.title, meta.description, "/"),
 };
 
 export default function Home() {

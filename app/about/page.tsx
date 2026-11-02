@@ -3,19 +3,17 @@ import { About } from "@/components/About";
 import { Principles } from "@/components/Principles";
 import { WhatShouldRomilDo } from "@/components/WhatShouldRomilDo";
 import { meta } from "@/lib/content";
+import { socialMetadata } from "@/lib/social";
+
+const title = `About — ${meta.name}`;
+const description =
+  "Get to know Romil Lodaya: a brand strategist, marketer, and builder working across strategy, creativity, and people.";
 
 export const metadata: Metadata = {
-  title: `About — ${meta.name}`,
-  description:
-    "Get to know Romil Lodaya: a brand strategist, marketer, and builder working across strategy, creativity, and people.",
+  title,
+  description,
   alternates: { canonical: "/about" },
-  openGraph: {
-    title: `About — ${meta.name}`,
-    description:
-      "Get to know Romil Lodaya: a brand strategist, marketer, and builder working across strategy, creativity, and people.",
-    type: "website",
-    url: "/about",
-  },
+  ...socialMetadata(title, description, "/about"),
 };
 
 export default function AboutPage() {
