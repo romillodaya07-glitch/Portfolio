@@ -209,3 +209,68 @@ html.lenis body {
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+
+
+/* Christmas mode: a warm evergreen and cranberry accent layer over the original palette. */
+html[data-theme="christmas"] {
+  --ink: #19231e;
+  --paper: #f7f5ed;
+  --card: #fffefa;
+  --accent: #236448;
+  background-color: var(--paper);
+}
+
+html[data-theme="christmas"] .bg-paper { background-color: #f7f5ed !important; }
+html[data-theme="christmas"] .bg-card { background-color: #fffefa !important; }
+html[data-theme="christmas"] .bg-ink { background-color: #19231e !important; }
+html[data-theme="christmas"] .bg-electric,
+html[data-theme="christmas"] .bg-electric-bright,
+html[data-theme="christmas"] .bg-electric-deep { background-color: #236448 !important; }
+html[data-theme="christmas"] .bg-gold { background-color: #e8bd63 !important; }
+html[data-theme="christmas"] .bg-gold-amber { background-color: #c58a3a !important; }
+html[data-theme="christmas"] .bg-pop-red { background-color: #9b3945 !important; }
+html[data-theme="christmas"] .bg-pop-green { background-color: #347652 !important; }
+html[data-theme="christmas"] .text-ink { color: #19231e !important; }
+html[data-theme="christmas"] .text-electric,
+html[data-theme="christmas"] .text-electric-bright,
+html[data-theme="christmas"] .text-electric-deep { color: #236448 !important; }
+html[data-theme="christmas"] .text-gold { color: #9a6c1e !important; }
+html[data-theme="christmas"] .text-pop-red { color: #9b3945 !important; }
+html[data-theme="christmas"] .border-ink { border-color: #19231e !important; }
+html[data-theme="christmas"] .border-electric,
+html[data-theme="christmas"] .border-electric-bright,
+html[data-theme="christmas"] .border-electric-deep { border-color: #236448 !important; }
+
+.christmas-snow {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+
+.christmas-snowflake {
+  position: absolute;
+  top: -10vh;
+  color: #86a9b6;
+  line-height: 1;
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.9);
+  animation-name: christmas-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+@keyframes christmas-fall {
+  from { transform: translate3d(0, -5vh, 0) rotate(0deg); }
+  to { transform: translate3d(3vw, 115vh, 0) rotate(220deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .christmas-snowflake {
+    animation: none;
+    top: 18vh;
+    will-change: auto;
+  }
+}
