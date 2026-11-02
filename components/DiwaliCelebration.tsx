@@ -16,24 +16,28 @@ export function ChristmasToggle() {
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    setEnabled(window.localStorage.getItem("romil-christmas-theme") === "on");
+    const saved = window.localStorage.getItem("romil-christmas-theme") === "on";
+    setEnabled(saved);
+    if (saved) document.documentElement.dataset.theme = "christmas";
   }, []);
 
-  useEffect(() => {
-    if (enabled) {
+  const toggleTheme = () => {
+    const next = !enabled;
+    if (next) {
       document.documentElement.dataset.theme = "christmas";
       window.localStorage.setItem("romil-christmas-theme", "on");
     } else {
       delete document.documentElement.dataset.theme;
       window.localStorage.removeItem("romil-christmas-theme");
     }
-  }, [enabled]);
+    setEnabled(next);
+  };
 
   return (
     <>
       <button
         type="button"
-        onClick={() => setEnabled((current) => !current)}
+        onClick={toggleTheme}
         aria-pressed={enabled}
         aria-label={enabled ? "Turn off Christmas theme" : "Light Up Christmas"}
         className={`pointer-events-auto inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-full border-2 border-ink px-3 py-2 text-xs font-black text-ink shadow-[3px_3px_0_0_#15121c] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#15121c] sm:px-4 sm:text-sm ${enabled ? "bg-[#f5e5b7]" : "bg-card"}`}
@@ -55,6 +59,7 @@ export function ChristmasToggle() {
               className="christmas-snowflake"
               style={{
                 left: flake.left,
+                top: reduceMotion ? `${(index * 29) % 90}vh` : undefined,
                 animationDelay: reduceMotion ? "0s" : flake.delay,
                 animationDuration: reduceMotion ? "0s" : flake.duration,
                 fontSize: flake.size,
