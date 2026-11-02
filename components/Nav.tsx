@@ -81,7 +81,7 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
-          {pathname === "/" && <DiwaliCelebration />}
+          <ChristmasToggle />
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
