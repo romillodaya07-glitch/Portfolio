@@ -6,7 +6,16 @@ import { meta } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: `About — ${meta.name}`,
-  description: meta.description,
+  description:
+    "Get to know Romil Lodaya: a brand strategist, marketer, and builder working across strategy, creativity, and people.",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: `About — ${meta.name}`,
+    description:
+      "Get to know Romil Lodaya: a brand strategist, marketer, and builder working across strategy, creativity, and people.",
+    type: "website",
+    url: "/about",
+  },
 };
 
 export default function AboutPage() {

@@ -43,13 +43,36 @@ const heroHand = Patrick_Hand({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.romil.live"),
   title: meta.title,
   description: meta.description,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: meta.title,
     description: meta.description,
     type: "website",
+    url: "/",
+    images: [
+      {
+        url: "/photos/portrait-studio.jpeg",
+        alt: "Romil Lodaya",
+      },
+    ],
   },
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: meta.name,
+  url: "https://www.romil.live/",
+  jobTitle: meta.roles.join(", "),
+  sameAs: [
+    "https://www.linkedin.com/in/romil-lodaya07",
+    "https://www.instagram.com/romil_07/",
+  ],
 };
 
 export const viewport: Viewport = {
@@ -66,6 +89,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${sans.variable} ${display.variable} ${heroDisplay.variable} ${heroHand.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         <a
           href="#about"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-5 focus:py-2 focus:text-sm focus:font-semibold focus:text-paper"

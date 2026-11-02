@@ -11,6 +11,14 @@ export const metadata: Metadata = {
   title: `Work — ${meta.name}`,
   description:
     "Strategy, marketing, and people — experience, brands, and the daily stack.",
+  alternates: { canonical: "/work" },
+  openGraph: {
+    title: `Work — ${meta.name}`,
+    description:
+      "Strategy, marketing, and people — experience, brands, and the daily stack.",
+    type: "website",
+    url: "/work",
+  },
 };
 
 export default function WorkPage() {

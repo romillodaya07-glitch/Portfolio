@@ -5,6 +5,13 @@ import { meta } from "@/lib/content";
 export const metadata: Metadata = {
   title: `Contact — ${meta.name}`,
   description: "Let's connect. Let's grow. Let's build.",
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    title: `Contact — ${meta.name}`,
+    description: "Let's connect. Let's grow. Let's build.",
+    type: "website",
+    url: "/contact",
+  },
 };
 
 export default function ContactPage() {
