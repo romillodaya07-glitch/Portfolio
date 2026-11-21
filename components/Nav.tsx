@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { navRoutes } from "@/lib/content";
 import { Magnetic } from "./Magnetic";
 import { burst } from "@/lib/confetti";
-import { DiwaliCelebration } from "./DiwaliCelebration";
+import { ChristmasMode } from "./ChristmasMode";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -65,8 +65,9 @@ export function Nav() {
           })}
         </nav>
 
+        <ChristmasMode />
+
         <div className="hidden items-center gap-3 md:flex">
-          {pathname === "/" && <DiwaliCelebration />}
           <Magnetic strength={0.5}>
             <Link
               href="/contact"
@@ -81,7 +82,6 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
-          {pathname === "/" && <DiwaliCelebration />}
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
