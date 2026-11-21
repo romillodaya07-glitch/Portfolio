@@ -3,13 +3,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 
-const flakes = Array.from({ length: 42 }, (_, index) => ({
+const flakes = Array.from({ length: 72 }, (_, index) => ({
   left: `${(index * 37.7) % 100}%`,
   delay: `${-((index * 1.73) % 18)}s`,
   duration: `${12 + ((index * 13) % 13)}s`,
-  size: `${3 + ((index * 7) % 6)}px`,
+  size: `${4 + ((index * 7) % 9)}px`,
   drift: `${((index * 31) % 90) - 45}px`,
-  opacity: 0.35 + ((index * 17) % 55) / 100,
+  opacity: 0.55 + ((index * 17) % 42) / 100,
 }));
 
 const gifts = [

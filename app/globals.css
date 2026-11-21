@@ -211,7 +211,7 @@ html.lenis body {
 }
 
 .christmas-overlay { position: fixed; inset: 0; z-index: 55; overflow: hidden; pointer-events: none; }
-.christmas-snowflake { position: absolute; top: -12px; border-radius: 50%; background: #fff; box-shadow: 0 0 8px 2px rgba(255,255,255,.65); animation: christmas-snow-fall linear infinite; will-change: transform; }
+.christmas-snowflake { position: absolute; top: -12px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 1px rgba(93,132,184,.34), 0 0 12px 3px rgba(186,219,255,.95); animation: christmas-snow-fall linear infinite; will-change: transform; }
 .christmas-gift { position: absolute; top: -40px; border-radius: 3px; background: linear-gradient(135deg,#e93445,#a8122c); box-shadow: 0 2px 8px rgba(63,8,15,.22); animation: christmas-gift-fall ease-in infinite; will-change: transform; }
 .christmas-gift::before,.christmas-gift::after { position:absolute; content:""; background:#f5cc58; }
 .christmas-gift::before { inset:0 42%; }
