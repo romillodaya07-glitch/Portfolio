@@ -210,7 +210,7 @@ html.lenis body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.christmas-overlay { position: fixed; inset: 0; z-index: 55; overflow: hidden; pointer-events: none; }
+.christmas-overlay { position: fixed; inset: 0; z-index: 49; overflow: hidden; pointer-events: none; }
 .christmas-snowflake { position: absolute; top: -12px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 1px rgba(93,132,184,.34), 0 0 12px 3px rgba(186,219,255,.95); animation: christmas-snow-fall linear infinite; will-change: transform; }
 .christmas-gift { position: absolute; top: -40px; border-radius: 3px; background: linear-gradient(135deg,#e93445,#a8122c); box-shadow: 0 2px 8px rgba(63,8,15,.22); animation: christmas-gift-fall ease-in infinite; will-change: transform; }
 .christmas-gift::before,.christmas-gift::after { position:absolute; content:""; background:#f5cc58; }
@@ -218,7 +218,7 @@ html.lenis body {
 .christmas-gift::after { inset:42% 0; }
 .christmas-gift i,.christmas-gift b { position:absolute; top:-7px; left:50%; width:9px; height:7px; border:2px solid #f5cc58; border-radius:80% 80% 0 80%; transform:translateX(-100%) rotate(25deg); }
 .christmas-gift b { transform:translateX(0) scaleX(-1) rotate(25deg); }
-.christmas-santa { position:absolute; top:14%; left:-260px; white-space:nowrap; font-size:clamp(2.2rem,5vw,4rem); filter:drop-shadow(0 6px 8px rgba(25,20,20,.18)); animation:christmas-santa-fly 11s ease-in-out .8s 1 both; }
+.christmas-santa { position:absolute; top:5%; left:-260px; white-space:nowrap; font-size:clamp(2.2rem,5vw,4rem); filter:drop-shadow(0 6px 8px rgba(25,20,20,.18)); animation:christmas-santa-fly 11s ease-in-out .8s 1 both; }
 @keyframes christmas-snow-fall { from { transform:translate3d(0,-3vh,0); } to { transform:translate3d(var(--snow-drift),108vh,0); } }
 @keyframes christmas-gift-fall { 0% { transform:translate3d(0,-4vh,0) rotate(-12deg); } 100% { transform:translate3d(34px,112vh,0) rotate(330deg); } }
 @keyframes christmas-santa-fly { 0% { transform:translate3d(-10vw,0,0); } 18% { transform:translate3d(30vw,-2vh,0); } 42% { transform:translate3d(68vw,1vh,0); } 62% { transform:translate3d(115vw,-1vh,0); } 100% { transform:translate3d(150vw,2vh,0); } }
