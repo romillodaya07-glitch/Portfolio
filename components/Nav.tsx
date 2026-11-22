@@ -27,10 +27,19 @@ export function Nav() {
 
   useEffect(() => setOpen(false), [pathname]);
 
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
+
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
       <div
-        className={`pointer-events-auto mx-auto flex max-w-7xl items-center justify-between px-5 transition-all duration-500 sm:px-8 ${
+        className={`pointer-events-auto mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center px-5 transition-all duration-500 sm:px-8 ${
           scrolled ? "py-3" : "py-5"
         }`}
       >
@@ -44,7 +53,7 @@ export function Nav() {
 
         <nav
           aria-label="Primary"
-          className="hidden items-center gap-1 rounded-full border-2 border-ink bg-card px-2 py-1.5 shadow-[4px_4px_0_0_#15121c] md:flex"
+          className="hidden items-center justify-self-center gap-1 rounded-full border-2 border-ink bg-card px-2 py-1.5 shadow-[4px_4px_0_0_#15121c] md:flex"
         >
           {navRoutes.map((r) => {
             const active = pathname === r.href;
@@ -65,7 +74,7 @@ export function Nav() {
           })}
         </nav>
 
-        <div className="ml-auto flex items-center gap-2 md:gap-3">
+        <div className="flex items-center justify-self-end gap-2 md:gap-3">
           <ChristmasMode />
           <div className="hidden items-center gap-3 md:flex">
             <Magnetic strength={0.5}>
@@ -86,7 +95,8 @@ export function Nav() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-label={open ? "Close menu" : "Open menu"}
-            className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border-2 border-ink bg-card shadow-[3px_3px_0_0_#15121c]"
+            aria-controls="mobile-primary-navigation"
+            className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border-2 border-ink bg-card shadow-[3px_3px_0_0_#15121c] focus-visible:!rounded-full md:hidden"
           >
             <span className="relative block h-3 w-5">
               <span
@@ -111,12 +121,15 @@ export function Nav() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.3 }}
+            id="mobile-primary-navigation"
+            aria-label="Mobile navigation"
             className="pointer-events-auto mx-4 overflow-hidden rounded-3xl border-2 border-ink bg-card p-3 shadow-[6px_6px_0_0_#15121c] md:hidden"
           >
             {navRoutes.map((r) => (
               <Link
                 key={r.href}
                 href={r.href}
+                onClick={() => setOpen(false)}
                 className={`block rounded-2xl px-4 py-3 text-lg font-bold transition-colors ${
                   pathname === r.href
                     ? "bg-electric text-white"
@@ -128,6 +141,7 @@ export function Nav() {
             ))}
             <Link
               href="/contact"
+              onClick={() => setOpen(false)}
               className="mt-1 block rounded-2xl bg-electric px-4 py-3 text-lg font-black text-white"
             >
               Let&apos;s build ↗

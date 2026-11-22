@@ -22,7 +22,7 @@ export function HeyGreeting({
       <motion.button
         type="button"
         onClick={cycleGreeting}
-        title="Click to say hi!"
+        title="Click to cycle through Hi, Hey, Hello, and Yo" aria-label={`Change greeting. Current greeting: ${GREETINGS[greetingIndex]}`}
         initial={{ y: 8, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         whileHover={{ scale: 1.06, rotate: -2 }}

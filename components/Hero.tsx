@@ -262,9 +262,7 @@ export function Hero() {
             <i /><i /><i /><i /><i /><i />
           </div>
 
-          <div className={styles.desk} aria-hidden="true">
-            <span className={styles.deskEdge} />
-          </div>
+          <div className={styles.desk} aria-hidden="true" />
 
           <div
             className={`${styles.movableLayer} ${styles.characterLayer}`}
@@ -276,7 +274,7 @@ export function Hero() {
             <div className={styles.characterFrame}>
               <div className={styles.characterBob}>
                 <Image
-                  src="/photos/hero-character.png"
+                  src="/photos/hero-character-desk.png"
                   alt="A 3D animated illustration of Romil in a black shirt and wristwatch"
                   fill
                   priority
@@ -306,19 +304,18 @@ export function Hero() {
             className={`${styles.movableLayer} ${styles.laptopLayer}`}
             data-creative-id="laptop"
             tabIndex={creativeMode ? 0 : -1}
-            aria-label="Blue MacBook Neo with an Apple logo on the lid"
+            aria-label="Open blue MacBook with the Apple logo visible on its back"
             style={poseStyle("laptop")}
           >
             <div className={styles.laptop} aria-hidden="true">
-              <div className={styles.laptopScreen}>
-                <span className={styles.laptopMark}>
-                  <svg viewBox="0 0 448 512" focusable="false" aria-hidden="true">
-                    <path d="M318.7 268.7c-.2-36.7 16.4-64.3 50-84.6-18.8-26.7-47.1-41.4-84.8-44.3-35.7-2.8-74.7 20.8-89 20.8-15.2 0-49.7-19.8-77.7-19.8C59.3 141.9 0 184.7 0 280.9c0 28.4 5.2 57.7 15.6 87.8 13.9 40.2 64 138.7 116.3 137.1 27.4-.7 46.7-19.5 79.5-19.5 31.8 0 49.8 19.5 80.3 19.5 52.7-.8 98-90.3 111.2-130.6-70.8-33.4-84.2-97.1-84.2-106.5zM260.4 88.3c27.5-32.6 25-62.3 24.2-73.1-24.3 1.4-52.4 16.6-68.4 34.5-17.6 19.4-27.9 43.4-25.7 70.5 26.3 2 50.4-11.5 69.9-31.9z" />
-                  </svg>
-                  <i />
-                </span>
-              </div>
-              <div className={styles.laptopBase} />
+              <Image
+                src="/photos/hero-macbook.png"
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 767px) 72vw, 42vw"
+                className={styles.laptopArtwork}
+              />
             </div>
           </div>
 

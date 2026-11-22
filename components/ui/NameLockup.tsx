@@ -27,7 +27,7 @@ export function NameLockup({
       </div>
 
       <Heading className="font-display leading-[0.8] tracking-tightest text-ink">
-        <span className="relative block origin-bottom-left -rotate-[3deg] -skew-x-[5deg] whitespace-nowrap text-[clamp(3rem,10vw,9rem)]">
+        <span className="relative block origin-bottom-left -rotate-[3deg] -skew-x-[5deg] whitespace-nowrap text-[clamp(2.5rem,8vw,8rem)]">
           <BlueMarkerStroke className="-left-[5%] -right-[8%] top-[56%] -translate-y-1/2 h-[48%] w-[113%] -rotate-[2deg]" />
           <span className="relative z-10">
             {letters(NAME).map((letter, index) => (
@@ -37,12 +37,13 @@ export function NameLockup({
                   animate={{ y: "0%" }}
                   transition={{ duration: 0.8, delay: 0.12 + index * 0.05, ease: EASE_OUT_EXPO }}
                   whileHover={{
-                    y: -10,
-                    rotate: index % 2 ? 5 : -5,
+                    y: -12,
+                    rotate: index % 2 ? 7 : -7,
+                    scale: 1.08,
                     color: NAME_HOVER[index % NAME_HOVER.length],
-                    transition: { type: "spring", stiffness: 500, damping: 12 },
+                    transition: { type: "spring", stiffness: 520, damping: 11 },
                   }}
-                  className={`inline-block cursor-pointer select-none transition-colors duration-200 ${index === 0 ? "text-pop-red" : "text-ink"}`}
+                  className="inline-block cursor-pointer select-none font-black text-ink transition-colors duration-200"
                 >
                   {letter}
                 </motion.span>
@@ -51,7 +52,7 @@ export function NameLockup({
           </span>
         </span>
 
-        <span className="text-sticker-white -mt-1 block -rotate-[1deg] whitespace-nowrap text-[clamp(3rem,10vw,9rem)] sm:-mt-2">
+        <span className="text-sticker-white -mt-1 block -rotate-[1deg] whitespace-nowrap text-[clamp(2.5rem,8vw,8rem)] sm:-mt-2">
           {letters(SURNAME).map((letter, index) => (
             <span key={index} className="inline-block overflow-hidden align-bottom">
               <motion.span
@@ -63,7 +64,7 @@ export function NameLockup({
                   rotate: index % 2 ? -4 : 4,
                   transition: { type: "spring", stiffness: 500, damping: 12 },
                 }}
-                className="inline-block cursor-pointer select-none"
+                className="inline-block cursor-pointer select-none font-black"
               >
                 {letter}
               </motion.span>
@@ -78,8 +79,8 @@ export function NameLockup({
         transition={{ duration: 0.6, delay: 0.6, ease: EASE_OUT_EXPO }}
         className="mt-3 inline-flex max-w-full -rotate-[1deg] items-center rounded-full border-[2.5px] border-ink bg-[#ffcc22] px-3 py-1.5 text-ink shadow-[3px_3px_0_0_#15121c] sm:mt-4 sm:px-5 sm:py-2"
       >
-        <span className="whitespace-nowrap font-display text-[8px] tracking-[0.1em] sm:text-[10px] sm:tracking-[0.16em] md:text-xs">
-          BRAND STRATEGIST &nbsp;•&nbsp; MARKETER &nbsp;•&nbsp; BUILDER
+        <span className="whitespace-nowrap font-display text-[9px] tracking-[0.1em] sm:text-xs sm:tracking-[0.14em] md:text-sm">
+          FOUNDER'S OFFICE &nbsp;•&nbsp; MARKETER &nbsp;•&nbsp; BUILDER
         </span>
       </motion.div>
     </div>
