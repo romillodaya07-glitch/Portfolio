@@ -65,23 +65,22 @@ export function Nav() {
           })}
         </nav>
 
-        <ChristmasMode />
+        <div className="ml-auto flex items-center gap-2 md:gap-3">
+          <ChristmasMode />
+          <div className="hidden items-center gap-3 md:flex">
+            <Magnetic strength={0.5}>
+              <Link
+                href="/contact"
+                data-cursor="Say hi"
+                onClick={(e) => burst(e.clientX, e.clientY)}
+                className="inline-flex items-center gap-2 rounded-full border-2 border-ink bg-electric px-5 py-2.5 text-sm font-black text-white shadow-[4px_4px_0_0_#15121c] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#15121c]"
+              >
+                Let&apos;s build
+                <span aria-hidden="true">↗</span>
+              </Link>
+            </Magnetic>
+          </div>
 
-        <div className="hidden items-center gap-3 md:flex">
-          <Magnetic strength={0.5}>
-            <Link
-              href="/contact"
-              data-cursor="Say hi"
-              onClick={(e) => burst(e.clientX, e.clientY)}
-              className="inline-flex items-center gap-2 rounded-full border-2 border-ink bg-electric px-5 py-2.5 text-sm font-black text-white shadow-[4px_4px_0_0_#15121c] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#15121c]"
-            >
-              Let&apos;s build
-              <span aria-hidden="true">↗</span>
-            </Link>
-          </Magnetic>
-        </div>
-
-        <div className="flex items-center gap-2 md:hidden">
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
