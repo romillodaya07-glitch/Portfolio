@@ -45,6 +45,11 @@ const heroHand = Patrick_Hand({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.romil.live"),
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
   title: meta.title,
   description: meta.description,
   alternates: {
