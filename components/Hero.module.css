@@ -440,28 +440,6 @@
   pointer-events: none;
 }
 
-.eyelid {
-  position: absolute;
-  display: block;
-  pointer-events: none;
-}
-
-.eyelid {
-  z-index: 2;
-  width: 6.5%;
-  height: 4%;
-  border-bottom: 2px solid rgba(118, 60, 43, 0.82);
-  border-radius: 45% 52% 52% 48%;
-  background: linear-gradient(180deg, #f2b378, #e99a62 75%, #dc8556);
-  opacity: 0;
-  transform: scaleY(0.02);
-  transform-origin: center 50%;
-  animation: blink 6.4s ease-in-out infinite;
-}
-
-.eyelidLeft { top: 34%; left: 37%; animation-delay: 0.8s; }
-.eyelidRight { top: 35.1%; left: 46.9%; animation-delay: 0.8s; }
-
 .booksLayer {
   bottom: 22%;
   left: 8%;
@@ -941,10 +919,7 @@
 @keyframes characterBob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
 @keyframes doodleFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
 @keyframes steam { 0%, 100% { opacity: 0.15; translate: 0 4px; } 50% { opacity: 0.7; translate: 2px -5px; } }
-@keyframes blink {
-  0%, 94%, 100% { opacity: 0; transform: scaleY(0.02); }
-  95.4%, 96.8% { opacity: 0.98; transform: scaleY(1); }
-}
+
 
 @media (min-width: 1500px) {
   .helloSpark { display: block; }

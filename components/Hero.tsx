@@ -282,8 +282,6 @@ export function Hero() {
                   className={styles.characterImage}
                 />
               </div>
-              <span className={`${styles.eyelid} ${styles.eyelidLeft}`} aria-hidden="true" />
-              <span className={`${styles.eyelid} ${styles.eyelidRight}`} aria-hidden="true" />
             </div>
           </div>
 
