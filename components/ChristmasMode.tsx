@@ -44,14 +44,12 @@ export function ChristmasMode() {
   const reduceMotion = useReducedMotion();
   const [active, setActive] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
-  const [santaRun, setSantaRun] = useState(0);
   const intervalRef = useRef<number | null>(null);
 
   const toggle = useCallback(() => {
     setActive((currentlyActive) => {
       const nextActive = !currentlyActive;
       if (nextActive) {
-        setSantaRun((run) => run + 1);
         setSoundOn(true);
         playJingle();
       } else if (intervalRef.current !== null) {
@@ -118,7 +116,6 @@ export function ChristmasMode() {
               width: gift.size, height: gift.size,
             }}><i /><b /></span>
           ))}
-          {!reduceMotion && <div key={santaRun} className="christmas-santa">🦌 🦌 🛷🎅</div>}
         </div>
       )}
     </>
