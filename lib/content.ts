@@ -27,7 +27,7 @@ export const taglines = [
 export const heroLine = "I don't just create content, I create connection.";
 
 export const heroDescription =
-  "I turn ideas into brands, stories into attention, and ambitious plans into things people can actually use.";
+  "I help in building ideas into impact where teams can build people and Cultural systems that actually scale.";
 export const heroServices = [
   {
     number: "01",
